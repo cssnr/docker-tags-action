@@ -24,14 +24,16 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 
 ## Inputs
 
-| input     | required | default | description                  |
-|-----------|----------|---------|------------------------------|
-| images    | Yes      | -       | Image to Generate Tag for    |
-| extra     | No       | -       | Extra Tags to Generate       |
-| seperator | No       | \n      | Tag Seperator for Output     |
-| latest    | No       | default | `true` or `false` expression |
+| input     | required | default   | description                    |
+|-----------|----------|-----------|--------------------------------|
+| images    | Yes      | -         | Image to Generate Tag for      |
+| extra     | No       | -         | Extra Tags to Generate *       |
+| seperator | No       | `\n`      | Tag Seperator for Output       |
+| latest    | No       | `default` | [`true`, `false`, `default`] * |
 
-- **latest**: Default behavior only adds `latest` tag to a release that are not a pre-release.
+**extra** - Extra tags can be newline or comma seperated.
+
+**latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
 
 ```yaml
   - name: "Update Tags"
