@@ -69,8 +69,9 @@ const { parse } = require('csv-parse/sync')
                 relax_column_count: true,
             }).flat()
             console.log('parsedTags:', parsedTags)
-            collectedTags.concat(parsedTags)
+            collectedTags.push(...parsedTags)
         }
+        console.log('collectedTags:', collectedTags)
 
         const tags = [...new Set(collectedTags)]
         console.log('tags:', tags)
