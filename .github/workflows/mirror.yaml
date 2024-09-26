@@ -26,5 +26,5 @@ jobs:
           host: https://codeberg.org
           owner: "shaner"
           create: true
-          username: shaner
+          username: "shaner"
           password: ${{ secrets.CODEBERG_TOKEN }}
