@@ -166,7 +166,7 @@ const { parse } = require('csv-parse/sync')
             core.summary.addCodeBlock(dockerLabels.join('\n'), 'plain')
             core.summary.addRaw(inputs_table, true)
             core.summary.addRaw(
-                '\n[View Documentation](https://github.com/smashedr/docker-tags-action#readme) | '
+                '\n[View Documentation](https://github.com/smashedr/docker-tags-action/tree/refs/heads/updates?tab=readme-ov-file#readme) | '
             )
             core.summary.addRaw(
                 '[Report an Issue or Request a Feature](https://github.com/smashedr/docker-tags-action/issues)',

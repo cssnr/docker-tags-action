@@ -63,17 +63,17 @@ ghcr.io/smashedr/docker-tags-action:latest</code></pre>
 
 Docker Labels 8
 
-<pre lang="plain"><code>org.opencontainers.image.created=2025-02-17T22:32:59.848Z
-org.opencontainers.image.description=Docker Tags Action
-org.opencontainers.image.revision=0f28c5e38cca8a0e4cbb7abef910d0d79430b130
+<pre lang="plain"><code>org.opencontainers.image.created=2025-02-17T23:03:18.554Z
+org.opencontainers.image.revision=b812bb5c006ecade3ff39b386c9174732bce9a30
 org.opencontainers.image.source=https://github.com/smashedr/docker-tags-action
 org.opencontainers.image.title=docker-tags-action
 org.opencontainers.image.url=https://github.com/smashedr/docker-tags-action
 org.opencontainers.image.version=pr-4
+org.opencontainers.image.description=Docker Tags Action
 org.opencontainers.image.authors=smashedr</code></pre>
 <details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>images</td><td>ghcr.io/smashedr/docker-tags-action</td></tr><tr><td>tags</td><td>-</td></tr><tr><td>labels</td><td>org.opencontainers.image.licenses=,org.opencontainers.image.authors=smashedr</td></tr><tr><td>seperator</td><td>"\n"</td></tr><tr><td>latest</td><td>true</td></tr><tr><td>summary</td><td>true</td></tr></table></details>
 
-[View Documentation](https://github.com/smashedr/docker-tags-action#readme) | [Report an issue or request a feature](https://github.com/smashedr/docker-tags-action/issues)
+[View Documentation](https://github.com/smashedr/docker-tags-action/tree/refs/heads/updates?tab=readme-ov-file#readme) | [Report an Issue or Request a Feature](https://github.com/smashedr/docker-tags-action/issues)
 
 ---
 
