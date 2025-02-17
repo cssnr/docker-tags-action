@@ -46,6 +46,35 @@ This works with no inputs, but you can customize the resulting tags and labels w
 
 **latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
 
+**latest** - Write a Summary for the job. To disable this set to `false`.
+
+<details><summary>Example Summary</summary>
+
+### Docker Tags Action
+
+Generated **2** Tag(s) and **8** Label(s) for **1** Image(s).
+
+Docker Tags 2
+
+<pre lang="plain"><code>ghcr.io/smashedr/docker-tags-action:pr-4
+ghcr.io/smashedr/docker-tags-action:latest</code></pre>
+
+Docker Labels 8
+
+<pre lang="plain"><code>org.opencontainers.image.created=2025-02-17T22:32:59.848Z
+org.opencontainers.image.description=Docker Tags Action
+org.opencontainers.image.revision=0f28c5e38cca8a0e4cbb7abef910d0d79430b130
+org.opencontainers.image.source=https://github.com/smashedr/docker-tags-action
+org.opencontainers.image.title=docker-tags-action
+org.opencontainers.image.url=https://github.com/smashedr/docker-tags-action
+org.opencontainers.image.version=pr-4
+org.opencontainers.image.authors=smashedr</code></pre>
+<details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>images</td><td>ghcr.io/smashedr/docker-tags-action</td></tr><tr><td>tags</td><td>-</td></tr><tr><td>labels</td><td>org.opencontainers.image.licenses=,org.opencontainers.image.authors=smashedr</td></tr><tr><td>seperator</td><td>"\n"</td></tr><tr><td>latest</td><td>true</td></tr><tr><td>summary</td><td>true</td></tr></table></details>
+
+[View Documentation](https://github.com/smashedr/docker-tags-action#readme) | [Report an issue or request a feature](https://github.com/smashedr/docker-tags-action/issues)
+
+</details>
+
 ### tags
 
 | Event             | Ref                 | Tags     |

@@ -166,7 +166,7 @@ const { parse } = require('csv-parse/sync')
                 '\n[View Documentation](https://github.com/smashedr/docker-tags-action#readme) | '
             )
             core.summary.addRaw(
-                '[Report an issue or request a feature](https://github.com/smashedr/docker-tags-action/issues)',
+                '[Report an Issue or Request a Feature](https://github.com/smashedr/docker-tags-action/issues)',
                 true
             )
             await core.summary.write()
