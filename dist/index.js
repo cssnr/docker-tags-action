@@ -33661,8 +33661,6 @@ const { parse } = __nccwpck_require__(1110)
         console.log('description:', repo.description)
         console.log('html_url:', repo.html_url)
         console.log('spdx_id:', repo.license?.spdx_id)
-        // const version = semver.parse(ref)
-        // console.log('version:', version)
 
         // Process Tags
         const collectedTags = []
@@ -33754,7 +33752,7 @@ const { parse } = __nccwpck_require__(1110)
         if (summary) {
             core.info('📝 Writing Job Summary')
             const inputs_table = gen_inputs_table({
-                images: 'WIP',
+                images: images.join(','),
                 tags: tags.replaceAll('\n', ','),
                 labels: labels.replaceAll('\n', ','),
                 seperator: JSON.stringify(seperator),
@@ -33762,16 +33760,14 @@ const { parse } = __nccwpck_require__(1110)
                 summary: summary,
             })
             core.summary.addRaw('### Docker Tags Action', true)
-            // core.summary.addRaw(
-            //     `Docker Tags\n\n\`\`\`\n${dockerTags.join('\n')}\n\`\`\``,
-            //     true
-            // )
-            core.summary.addRaw('Docker Tags', true)
-            core.summary.addCodeBlock(dockerTags.join('\n'), 'plain')
             core.summary.addRaw(
-                `Docker Labels\n\n\`\`\`\n${dockerLabels.join('\n')}\n\`\`\``,
+                `Generated **${dockerTags.length / images.length}** Tags and **${dockerLabels.length / images.length}** Labels for **${images.length}** Images.`,
                 true
             )
+            core.summary.addRaw('Docker Tags', true)
+            core.summary.addCodeBlock(dockerTags.join('\n'), 'plain')
+            core.summary.addRaw('Docker Labels', true)
+            core.summary.addCodeBlock(dockerLabels.join('\n'), 'plain')
             core.summary.addRaw(inputs_table, true)
             core.summary.addRaw(
                 '\n[Report an issue or request a feature](https://github.com/smashedr/docker-tags-action/issues)',
