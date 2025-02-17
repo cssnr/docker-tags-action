@@ -66,17 +66,31 @@ const { parse } = require('csv-parse/sync')
         const allTags = [...new Set(collectedTags)]
         console.log('allTags:', allTags)
 
-        // Process Results
+        // Process Tags
         const dockerTags = []
         for (const tag of allTags) {
             dockerTags.push(`${image}:${tag}`)
         }
         console.log('dockerTags:', dockerTags)
 
+        // Process Labels
+        let collectedLabels = []
+        if (labels) {
+            const parsedLabels = parse(labels, {
+                delimiter: ',',
+                trim: true,
+                relax_column_count: true,
+            }).flat()
+            console.log('parsedLabels:', parsedLabels)
+            collectedLabels.push(...parsedLabels)
+        }
+        console.log('collectedLabels:', collectedLabels)
+        const allLabels = [...new Set(collectedLabels)]
+        console.log('allLabels:', allLabels)
+
         // Set Outputs
-        const output = dockerTags.join(seperator)
-        console.log('tags:', output)
-        core.setOutput('tags', output)
+        core.setOutput('tags', dockerTags.join(seperator))
+        core.setOutput('labels', allLabels.join(seperator))
     } catch (e) {
         core.debug(e)
         core.info(e.message)

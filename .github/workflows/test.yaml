@@ -29,6 +29,11 @@ jobs:
             echo "No Output: tags"
             exit 1
           fi
+          echo "labels: '${{ steps.test.outputs.labels }}'"
+          #if [ -z '${{ steps.test.outputs.labels }}' ];then
+          #  echo "No Output: labels"
+          #  exit 1
+          #fi
 
   lint:
     name: "Lint"

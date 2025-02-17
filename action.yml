@@ -23,13 +23,12 @@ inputs:
     description: "Latest Tag"
     required: false
     default: "default"
-#    prefix:
-#        description: 'Semantic Tag Prefix'
-#        required: false
 
 outputs:
   tags:
-    description: "Generated Docker tags"
+    description: "Generated Docker Tags"
+  labels:
+    description: "Generated Docker Labels"
 
 runs:
   using: "node20"
