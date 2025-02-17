@@ -22,7 +22,7 @@
   "repository": {
     "name": "repository-name",
     "description": "Example Repository Description",
-    "html_url": "https://github.com/smashedr/docker-tags-action",
+    "html_url": "https://github.com/cssnr/docker-tags-action",
     "license": {
       "name": "GNU General Public License v3.0",
       "spdx_id": "GPL-3.0"
