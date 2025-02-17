@@ -8,24 +8,31 @@ branding:
 inputs:
   images:
     description: "Image Names to Tag"
-    required: true
-  extra:
+    required: false
+    default: "ghcr.io/${{ github.repository }}"
+  tags:
     description: "Extra Tags to Add"
     required: false
+  labels:
+    description: "Extra Labels to Add"
+    required: false
   seperator:
-    description: "Tags Output Seperator"
+    description: "Output Seperator"
     required: false
   latest:
-    description: "Add latest Tag"
+    description: "Latest Tag"
     required: false
     default: "default"
-#    prefix:
-#        description: 'Semantic Tag Prefix'
-#        required: false
+  summary:
+    description: "Add Summary to Job"
+    required: false
+    default: "true"
 
 outputs:
   tags:
-    description: "Generated Docker tags"
+    description: "Generated Docker Tags"
+  labels:
+    description: "Generated Docker Labels"
 
 runs:
   using: "node20"
