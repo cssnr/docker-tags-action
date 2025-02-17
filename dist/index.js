@@ -33636,6 +33636,7 @@ const { parse } = __nccwpck_require__(1110)
         core.info(`ref: \u001b[32;1m${ref}`)
 
         // Process Inputs
+        // core.info(`images: "${images}"`)
         const images = parse(core.getInput('images', { required: true }), {
             delimiter: ',',
             trim: true,
@@ -33651,6 +33652,8 @@ const { parse } = __nccwpck_require__(1110)
         console.log('seperator:', JSON.stringify(seperator))
         const latest = core.getInput('latest')
         console.log('latest:', latest)
+        const summary = core.getBooleanInput('summary')
+        console.log('summary:', summary)
 
         // Set Variables
         const repo = github.context.payload.repository
@@ -33746,12 +33749,59 @@ const { parse } = __nccwpck_require__(1110)
         // Set Outputs
         core.setOutput('tags', dockerTags.join(seperator))
         core.setOutput('labels', dockerLabels.join(seperator))
+
+        // Summary
+        if (summary) {
+            core.info('📝 Writing Job Summary')
+            const inputs_table = gen_inputs_table({
+                images: 'WIP',
+                tags: tags.replaceAll('\n', ','),
+                labels: labels.replaceAll('\n', ','),
+                seperator: JSON.stringify(seperator),
+                latest: latest,
+                summary: summary,
+            })
+            core.summary.addRaw('### Docker Tags Action', true)
+            core.summary.addRaw(
+                `Docker Tags\n\n\`\`\`\n${dockerTags.join('\n')}\n\`\`\``,
+                true
+            )
+            core.summary.addRaw(
+                `Docker Labels\n\n\`\`\`\n${dockerLabels.join('\n')}\n\`\`\``,
+                true
+            )
+            core.summary.addRaw(inputs_table, true)
+            core.summary.addRaw(
+                '\n[Report an issue or request a feature](https://github.com/smashedr/docker-tags-action/issues)',
+                true
+            )
+            await core.summary.write()
+        } else {
+            core.info('⏩ Skipping Job Summary')
+        }
     } catch (e) {
         core.debug(e)
         core.info(e.message)
         core.setFailed(e.message)
     }
 })()
+
+/**
+ * @function gen_inputs_table
+ * @param {Object} inputs
+ * @return String
+ */
+function gen_inputs_table(inputs) {
+    const table = [
+        '<details><summary>Inputs</summary>',
+        '<table><tr><th>Input</th><th>Value</th></tr>',
+    ]
+    for (const [key, object] of Object.entries(inputs)) {
+        const value = object.toString() || '-'
+        table.push(`<tr><td>${key}</td><td>${value}</td></tr>`)
+    }
+    return table.join('') + '</table></details>'
+}
 
 module.exports = __webpack_exports__;
 /******/ })()

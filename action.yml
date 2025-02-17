@@ -23,6 +23,10 @@ inputs:
     description: "Latest Tag"
     required: false
     default: "default"
+  summary:
+    description: "Add Summary to Job"
+    required: false
+    default: "true"
 
 outputs:
   tags:

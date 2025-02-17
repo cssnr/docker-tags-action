@@ -32,6 +32,7 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 | labels    | No       | _[see labels](#labels)_            | Extra Labels to Generate, CSV or Newline  |
 | seperator | No       | `\n`                               | Output Seperator                          |
 | latest    | No       | `default`                          | Latest Tag: [true, false, default] \*     |
+| summary   | No       | `true`                             | Add Summary to Job                        |
 
 ```yaml
 - name: 'Docker Tags'
