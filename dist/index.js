@@ -33764,11 +33764,14 @@ const { parse } = __nccwpck_require__(1110)
                 `Generated **${dockerTags.length / images.length}** Tag(s) and **${dockerLabels.length / images.length}** Label(s) for **${images.length}** Image(s).\n`,
                 true
             )
-            core.summary.addRaw(`Docker Tags - ${dockerTags.length}`, true)
+            core.summary.addRaw(`Docker Tags ${dockerTags.length}`, true)
             core.summary.addCodeBlock(dockerTags.join('\n'), 'plain')
-            core.summary.addRaw(`Docker Labels - ${dockerLabels.length}`, true)
+            core.summary.addRaw(`Docker Labels ${dockerLabels.length}`, true)
             core.summary.addCodeBlock(dockerLabels.join('\n'), 'plain')
             core.summary.addRaw(inputs_table, true)
+            core.summary.addRaw(
+                '\n[View Documentation](https://github.com/smashedr/docker-tags-action#readme) | '
+            )
             core.summary.addRaw(
                 '\n[Report an issue or request a feature](https://github.com/smashedr/docker-tags-action/issues)',
                 true
