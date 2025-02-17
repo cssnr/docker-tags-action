@@ -94,12 +94,15 @@ const { parse } = require('csv-parse/sync')
         core.info('⌛ Processing Labels')
         const defaultLabels = {
             'org.opencontainers.image.created': new Date().toISOString(),
-            'org.opencontainers.image.description': repo.description,
             'org.opencontainers.image.revision': github.context.sha,
             'org.opencontainers.image.source': repo.html_url,
             'org.opencontainers.image.title': repo.name,
             'org.opencontainers.image.url': repo.html_url,
             'org.opencontainers.image.version': ref,
+        }
+        if (repo.description) {
+            defaultLabels['org.opencontainers.image.description'] =
+                repo.description
         }
         if (repo.license?.spdx_id) {
             defaultLabels['org.opencontainers.image.licenses'] =

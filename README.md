@@ -46,9 +46,11 @@ This works with no inputs, but you can customize the resulting tags and labels w
 
 **latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
 
-**latest** - Write a Summary for the job. To disable this set to `false`.
+**summary** - Write a Summary for the job. To disable this set to `false`.
 
 <details><summary>Example Summary</summary>
+
+---
 
 ### Docker Tags Action
 
@@ -73,9 +75,13 @@ org.opencontainers.image.authors=smashedr</code></pre>
 
 [View Documentation](https://github.com/smashedr/docker-tags-action#readme) | [Report an issue or request a feature](https://github.com/smashedr/docker-tags-action/issues)
 
+---
+
 </details>
 
 ### tags
+
+This is the default tag added which is also set as the version for the label.
 
 | Event             | Ref                 | Tags     |
 | ----------------- | ------------------- | -------- |
@@ -83,9 +89,11 @@ org.opencontainers.image.authors=smashedr</code></pre>
 | `push` / `other`  | `refs/heads/master` | `master` |
 | `pull_request`    | `refs/pull/1/merge` | `pr-1`   |
 
-This is the default tag added which is also set as the version for the label.
+TODO/WIP: Add an option called `default` to disable or override the default tag.
 
 ### labels
+
+These are the default labels. You can add them or remove them by providing a key with no value.
 
 ```shell
 org.opencontainers.image.description=Example Repository Description
@@ -97,7 +105,7 @@ org.opencontainers.image.version=v1.0.0
 org.opencontainers.image.licenses=GPL-3.0
 ```
 
-These are the default labels. You can remove them individually by providing a key with no value to `labels`.
+The description and license are only added if they are defined on your repository.
 
 Example removing `org.opencontainers.image.licenses` and adding `org.opencontainers.image.authors`.
 
