@@ -1,32 +1,32 @@
-name: 'Docker Tags Action'
-description: 'Parse Docker Tags'
-author: 'Shane'
+name: "Docker Tags Action"
+description: "Generate Docker Tags for building docker images."
+author: "Shane"
 branding:
-    icon: 'tag'
-    color: 'blue'
+  icon: "tag"
+  color: "blue"
 
 inputs:
-    images:
-        description: 'Image Names to Tag'
-        required: true
-    extra:
-        description: 'Extra Tags to Add'
-        required: false
-    seperator:
-        description: 'Tags Output Seperator'
-        required: false
-    latest:
-        description: 'Add latest Tag'
-        required: false
-        default: 'default'
+  images:
+    description: "Image Names to Tag"
+    required: true
+  extra:
+    description: "Extra Tags to Add"
+    required: false
+  seperator:
+    description: "Tags Output Seperator"
+    required: false
+  latest:
+    description: "Add latest Tag"
+    required: false
+    default: "default"
 #    prefix:
 #        description: 'Semantic Tag Prefix'
 #        required: false
 
 outputs:
-    tags:
-        description: 'Generated Docker tags'
+  tags:
+    description: "Generated Docker tags"
 
 runs:
-    using: 'node20'
-    main: 'dist/index.js'
+  using: "node20"
+  main: "dist/index.js"
