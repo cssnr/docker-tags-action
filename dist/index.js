@@ -33617,7 +33617,9 @@ const { parse } = __nccwpck_require__(1110)
 ;(async () => {
     try {
         // Debug
-        // console.log('github.context:', github.context)
+        console.log('process.env:', process.env)
+        console.log('github.context:', github.context)
+
         console.log('github.context.ref:', github.context.ref)
         console.log('github.context.eventName:', github.context.eventName)
         console.log('prerelease:', github.context.payload.release?.prerelease)
