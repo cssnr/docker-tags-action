@@ -14,9 +14,12 @@ Linting (this is checked by actions):
 
 ## Running Locally
 
-1. Install project: `npm install`
+To run actions locally you need to install act: https://nektosact.com/installation/index.html
+
+1. Install: `npm install`
 2. Watch build: `npm run build:watch`
-3. Install `act`: https://nektosact.com/installation/index.html
-4. Run: `act -j test`
+3. Run: `act -j test`
 
 To see all available jobs run: `act -l`
+
+For advanced using with things like secrets, variables and context see: https://nektosact.com/usage/index.html

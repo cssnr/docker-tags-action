@@ -25,12 +25,12 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 
 ## Inputs
 
-| input     | required | default   | description                                |
-| --------- | -------- | --------- | ------------------------------------------ |
-| images    | Yes      | -         | Image to Generate Tag for                  |
-| extra     | No       | -         | Extra Tags to Generate \*                  |
-| seperator | No       | `\n`      | Tag Seperator for Output                   |
-| latest    | No       | `default` | Add `latest` tag [true, false, default] \* |
+| input     | required | default   | description                           |
+| --------- | -------- | --------- | ------------------------------------- |
+| images    | Yes      | -         | Image to Generate Tag for             |
+| extra     | No       | -         | Extra Tags to Generate \*             |
+| seperator | No       | `\n`      | Tag Seperator for Output              |
+| latest    | No       | `default` | Latest tag: [true, false, default] \* |
 
 **extra** - Extra tags can be newline or comma seperated.
 
