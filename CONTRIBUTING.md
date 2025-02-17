@@ -12,13 +12,24 @@ Linting (this is checked by actions):
 - Flake8 (.py)
 - ShellCheck (.sh)
 
-## Running Locally
+## Building
+
+Before you submit a PR you must make sure the app is built and committed to the repository.
+
+```shell
+npm install
+npm run build
+```
+
+## Testing Locally
 
 To run actions locally you need to install act: https://nektosact.com/installation/index.html
 
-1. Install: `npm install`
-2. Watch build: `npm run build:watch`
-3. Run: `act -j test`
+```shell
+npm install
+npm run build:watch
+act -j test
+```
 
 To see all available jobs run: `act -l`
 
