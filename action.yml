@@ -6,7 +6,7 @@ branding:
   color: "blue"
 
 inputs:
-  image:
+  images:
     description: "Image Names to Tag"
     required: false
     default: "ghcr.io/${{ github.repository }}"

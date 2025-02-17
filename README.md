@@ -25,15 +25,15 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 
 ## Inputs
 
-| input     | required | default                            | description                           |
-| --------- | -------- | ---------------------------------- | ------------------------------------- |
-| image     | No       | `ghcr.io/${{ github.repository }}` | Image for Tag Generation              |
-| tags      | No       | -                                  | Extra Tags to Generate \*             |
-| labels    | No       | -                                  | Extra Labels to Generate \*           |
-| seperator | No       | `\n`                               | Output Seperator                      |
-| latest    | No       | `default`                          | Latest Tag: [true, false, default] \* |
+| input     | required | default                            | description                               |
+| --------- | -------- | ---------------------------------- | ----------------------------------------- |
+| images    | No       | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline |
+| tags      | No       | -                                  | Extra Tags to Generate, CSV or Newline    |
+| labels    | No       | -                                  | Extra Labels to Generate, CSV or Newline  |
+| seperator | No       | `\n`                               | Output Seperator                          |
+| latest    | No       | `default`                          | Latest Tag: [true, false, default] \*     |
 
-**default** - Generate a default tag based on the event.
+**default** - Generate a default tag based on the event. WIP!
 
 | Event             | Ref                 | Tags     |
 | ----------------- | ------------------- | -------- |
@@ -41,18 +41,28 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 | `push` / `other`  | `refs/heads/master` | `master` |
 | `pull_request`    | `refs/pull/1/merge` | `pr-1`   |
 
-**tags** - Extra tags can be newline or comma seperated.
-
-**labels** - Extra tags can be newline or comma seperated. Not yet used!
-
 **latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
 
 ```yaml
 - name: 'Docker Tags'
   id: tags
   uses: smashedr/docker-tags-action@master
+```
+
+With all inputs.
+
+```yaml
+- name: 'Docker Tags'
+  id: tags
+  uses: smashedr/docker-tags-action@master
   with:
-    image: 'ghcr.io/${{ github.repository }}'
+    images: 'ghcr.io/${{ github.repository }}'
+    tags: |
+      v1
+      v1.0
+    labels: WIP
+    seperator: ','
+    latest: true
 ```
 
 ### Outputs
@@ -69,7 +79,9 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
     images: 'ghcr.io/${{ github.repository }}'
 
 - name: 'Echo Result'
-  run: echo '${{ steps.tags.outputs.tags }}'
+  run: |
+    echo tags: '${{ steps.tags.outputs.tags }}'
+    echo labels: '${{ steps.tags.outputs.labels }}'
 ```
 
 ## Examples

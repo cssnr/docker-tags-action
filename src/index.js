@@ -1,6 +1,5 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
-// const semver = require('semver')
 const { parse } = require('csv-parse/sync')
 
 ;(async () => {
@@ -20,8 +19,12 @@ const { parse } = require('csv-parse/sync')
         core.info(`ref: \u001b[32;1m${ref}`)
 
         // Process Inputs
-        const image = core.getInput('image', { required: true })
-        console.log('image:', image)
+        const images = parse(core.getInput('images', { required: true }), {
+            delimiter: ',',
+            trim: true,
+            relax_column_count: true,
+        }).flat()
+        console.log('images:', images)
         const tags = core.getInput('tags')
         console.log('tags:', tags)
         const labels = core.getInput('labels')
@@ -68,8 +71,10 @@ const { parse } = require('csv-parse/sync')
 
         // Process Tags
         const dockerTags = []
-        for (const tag of allTags) {
-            dockerTags.push(`${image}:${tag}`)
+        for (const image of images) {
+            for (const tag of allTags) {
+                dockerTags.push(`${image}:${tag}`)
+            }
         }
         console.log('dockerTags:', dockerTags)
 
