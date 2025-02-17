@@ -100,7 +100,7 @@ const { parse } = require('csv-parse/sync')
             defaultLabels['org.opencontainers.image.licenses'] =
                 repo.license.spdx_id
         }
-        // let collectedLabels = {}
+        // console.log('defaultLabels:', defaultLabels)
         if (labels) {
             const parsedLabels = parse(labels, {
                 delimiter: ',',
@@ -116,15 +116,15 @@ const { parse } = require('csv-parse/sync')
                 }
                 const [key, value] = label.split(/=(.*)/s).slice(0, 2)
                 if (value) {
-                    console.log(`++ adding label: ${key}=${value}`)
+                    console.log(`\u001b[32;1mAdding: \u001b[0m${key}=${value}`)
                     defaultLabels[key] = value
                 } else {
-                    console.log(`-- deleting label: ${key}=${value}`)
+                    console.log(`\u001b[31;1mDeleting: \u001b[0m${key}`)
                     delete defaultLabels[key]
                 }
             }
         }
-        console.log('defaultLabels:', defaultLabels)
+        // console.log('defaultLabels:', defaultLabels)
         const dockerLabels = []
         for (const [key, value] of Object.entries(defaultLabels)) {
             dockerLabels.push(`${key}=${value}`)
