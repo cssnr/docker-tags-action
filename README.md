@@ -28,12 +28,18 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 | input     | required | default                            | description                               |
 | --------- | -------- | ---------------------------------- | ----------------------------------------- |
 | images    | No       | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline |
-| tags      | No       | -                                  | Extra Tags to Generate, CSV or Newline    |
-| labels    | No       | -                                  | Extra Labels to Generate, CSV or Newline  |
+| tags      | No       | _[see tags](#tags)_                | Extra Tags to Generate, CSV or Newline    |
+| labels    | No       | _[see labels](#labels)_            | Extra Labels to Generate, CSV or Newline  |
 | seperator | No       | `\n`                               | Output Seperator                          |
 | latest    | No       | `default`                          | Latest Tag: [true, false, default] \*     |
 
-**default** - Generates a default tag based on the event. WIP
+```yaml
+- name: 'Docker Tags'
+  id: tags
+  uses: smashedr/docker-tags-action@master
+```
+
+### tags
 
 | Event             | Ref                 | Tags     |
 | ----------------- | ------------------- | -------- |
@@ -41,33 +47,31 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 | `push` / `other`  | `refs/heads/master` | `master` |
 | `pull_request`    | `refs/pull/1/merge` | `pr-1`   |
 
-**labels** - Will allow adding/overriding default labels. WIP
+This is the default tag added. To disable this set `default: false` (WIP).
+
+### labels
+
+```shell
+org.opencontainers.image.description=Example Repository Description
+org.opencontainers.image.revision=32b96cee5b4e940b4023f78261702470d59c8001
+org.opencontainers.image.source=https://github.com/smashedr/docker-tags-action
+org.opencontainers.image.title=repository-name
+org.opencontainers.image.url=https://github.com/smashedr/docker-tags-action
+org.opencontainers.image.version=v1.0.0
+org.opencontainers.image.licenses=GPL-3.0
+```
+
+These are the default labels. You can remove them individually by providing a key with no value to `labels`.
+
+Example removing `org.opencontainers.image.licenses` and adding `org.opencontainers.image.authors`.
+
+```yaml
+labels: |
+  org.opencontainers.image.licenses=
+  org.opencontainers.image.authors=smashedr
+```
 
 **latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
-
-With minimal inputs.
-
-```yaml
-- name: 'Docker Tags'
-  id: tags
-  uses: smashedr/docker-tags-action@master
-```
-
-With all inputs.
-
-```yaml
-- name: 'Docker Tags'
-  id: tags
-  uses: smashedr/docker-tags-action@master
-  with:
-    images: 'ghcr.io/${{ github.repository }}'
-    tags: |
-      v1
-      v1.0
-    labels: WIP
-    seperator: ','
-    latest: true
-```
 
 ### Outputs
 
@@ -92,6 +96,24 @@ All outputs are seperated by the inputs `seperator` which defaults to a newline.
 ```
 
 ## Examples
+
+With all inputs:
+
+```yaml
+- name: 'Docker Tags'
+  id: tags
+  uses: smashedr/docker-tags-action@master
+  with:
+    images: 'ghcr.io/${{ github.repository }}'
+    tags: v1,v1.0
+    labels: |
+      org.opencontainers.image.licenses=
+      org.opencontainers.image.authors=smashedr
+    seperator: ','
+    latest: true
+```
+
+Full Example:
 
 ```yaml
 name: 'Release'

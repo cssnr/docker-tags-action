@@ -100,19 +100,31 @@ const { parse } = require('csv-parse/sync')
             defaultLabels['org.opencontainers.image.licenses'] =
                 repo.license.spdx_id
         }
-        // let collectedLabels = []
-        // if (labels) {
-        //     const parsedLabels = parse(labels, {
-        //         delimiter: ',',
-        //         trim: true,
-        //         relax_column_count: true,
-        //     }).flat()
-        //     console.log('parsedLabels:', parsedLabels)
-        //     collectedLabels.push(...parsedLabels)
-        // }
-        // console.log('collectedLabels:', collectedLabels)
-        // const allLabels = [...new Set(collectedLabels)]
-        // console.log('allLabels:', allLabels)
+        // let collectedLabels = {}
+        if (labels) {
+            const parsedLabels = parse(labels, {
+                delimiter: ',',
+                trim: true,
+                relax_column_count: true,
+            }).flat()
+            console.log('parsedLabels:', parsedLabels)
+            for (const label of parsedLabels) {
+                if (!label.includes('=')) {
+                    return core.setFailed(
+                        `Label provided without an = symbol: ${label}`
+                    )
+                }
+                const [key, value] = label.split(/=(.*)/s).slice(0, 2)
+                if (value) {
+                    console.log(`++ adding label: ${key}=${value}`)
+                    defaultLabels[key] = value
+                } else {
+                    console.log(`-- deleting label: ${key}=${value}`)
+                    delete defaultLabels[key]
+                }
+            }
+        }
+        console.log('defaultLabels:', defaultLabels)
         const dockerLabels = []
         for (const [key, value] of Object.entries(defaultLabels)) {
             dockerLabels.push(`${key}=${value}`)

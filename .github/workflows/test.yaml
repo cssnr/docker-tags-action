@@ -26,7 +26,10 @@ jobs:
         id: test
         uses: ./
         with:
-          latest: "true"
+          latest: true
+          labels: |
+            org.opencontainers.image.licenses=
+            org.opencontainers.image.authors=smashedr
 
       - name: "Validate Outputs"
         run: |
