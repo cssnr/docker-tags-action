@@ -33762,10 +33762,12 @@ const { parse } = __nccwpck_require__(1110)
                 summary: summary,
             })
             core.summary.addRaw('### Docker Tags Action', true)
-            core.summary.addRaw(
-                `Docker Tags\n\n\`\`\`\n${dockerTags.join('\n')}\n\`\`\``,
-                true
-            )
+            // core.summary.addRaw(
+            //     `Docker Tags\n\n\`\`\`\n${dockerTags.join('\n')}\n\`\`\``,
+            //     true
+            // )
+            core.summary.addRaw('Docker Tags', true)
+            core.summary.addCodeBlock(dockerTags.join('\n'), 'plain')
             core.summary.addRaw(
                 `Docker Labels\n\n\`\`\`\n${dockerLabels.join('\n')}\n\`\`\``,
                 true
