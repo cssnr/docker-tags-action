@@ -25,14 +25,25 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 
 ## Inputs
 
-| input     | required | default   | description                           |
-| --------- | -------- | --------- | ------------------------------------- |
-| images    | Yes      | -         | Image to Generate Tag for             |
-| extra     | No       | -         | Extra Tags to Generate \*             |
-| seperator | No       | `\n`      | Tag Seperator for Output              |
-| latest    | No       | `default` | Latest tag: [true, false, default] \* |
+| input     | required | default                            | description                           |
+| --------- | -------- | ---------------------------------- | ------------------------------------- |
+| image     | No       | `ghcr.io/${{ github.repository }}` | Image for Tag Generation              |
+| tags      | No       | -                                  | Extra Tags to Generate \*             |
+| labels    | No       | -                                  | Extra Labels to Generate \*           |
+| seperator | No       | `\n`                               | Output Seperator                      |
+| latest    | No       | `default`                          | Latest Tag: [true, false, default] \* |
 
-**extra** - Extra tags can be newline or comma seperated.
+**default** - Generate a default tag based on the event.
+
+| Event             | Ref                 | Tags     |
+| ----------------- | ------------------- | -------- |
+| `tag` / `release` | `refs/tags/v1.0.0`  | `v1.0.0` |
+| `push` / `other`  | `refs/heads/master` | `master` |
+| `pull_request`    | `refs/pull/1/merge` | `pr-1`   |
+
+**tags** - Extra tags can be newline or comma seperated.
+
+**labels** - Extra tags can be newline or comma seperated. Not yet used!
 
 **latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
 
@@ -41,7 +52,7 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
   id: tags
   uses: smashedr/docker-tags-action@master
   with:
-    images: 'ghcr.io/${{ github.repository }}'
+    image: 'ghcr.io/${{ github.repository }}'
 ```
 
 ### Outputs
