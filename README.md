@@ -1,4 +1,4 @@
-[![Tags](https://img.shields.io/github/actions/workflow/status/smashedr/docker-tags-action/tags.yaml?logo=github&logoColor=white&label=tags)](https://github.com/smashedr/docker-tags-action/actions/workflows/tags.yaml)
+[![Release](https://img.shields.io/github/actions/workflow/status/smashedr/docker-tags-action/release.yaml?logo=github&logoColor=white&label=tags)](https://github.com/smashedr/docker-tags-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/smashedr/docker-tags-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/smashedr/docker-tags-action/actions/workflows/test.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=smashedr_docker-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=smashedr_docker-tags-action)
 [![GitHub Release Version](https://img.shields.io/github/v/release/smashedr/docker-tags-action?logo=github)](https://github.com/smashedr/docker-tags-action/releases/latest)
@@ -17,30 +17,31 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 > a [Feature Request](https://github.com/smashedr/docker-tags-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/smashedr/docker-tags-action/issues) if you find any bugs.
 
--   [Inputs](#Inputs)
--   [Outputs](#Outputs)
--   [Examples](#Examples)
--   [Support](#Support)
--   [Contributing](#Contributing)
+- [Inputs](#Inputs)
+- [Outputs](#Outputs)
+- [Examples](#Examples)
+- [Support](#Support)
+- [Contributing](#Contributing)
 
 ## Inputs
 
-| input     | required | default   | description                     |
-| --------- | -------- | --------- | ------------------------------- |
-| images    | Yes      | -         | Image to Generate Tag for       |
-| extra     | No       | -         | Extra Tags to Generate \*       |
-| seperator | No       | `\n`      | Tag Seperator for Output        |
-| latest    | No       | `default` | [`true`, `false`, `default`] \* |
+| input     | required | default   | description                                |
+| --------- | -------- | --------- | ------------------------------------------ |
+| images    | Yes      | -         | Image to Generate Tag for                  |
+| extra     | No       | -         | Extra Tags to Generate \*                  |
+| seperator | No       | `\n`      | Tag Seperator for Output                   |
+| latest    | No       | `default` | Add `latest` tag [true, false, default] \* |
 
 **extra** - Extra tags can be newline or comma seperated.
 
 **latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
 
 ```yaml
-- name: 'Update Tags'
+- name: 'Docker Tags'
+  id: tags
   uses: smashedr/docker-tags-action@master
   with:
-      images: 'ghcr.io/${{ github.repository }}'
+    images: 'ghcr.io/${{ github.repository }}'
 ```
 
 ### Outputs
@@ -50,11 +51,11 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 | tags   | Tags Generated for Image |
 
 ```yaml
-- name: 'Generate Tags'
+- name: 'Docker Tags'
   id: tags
   uses: smashedr/docker-tags-action@master
   with:
-      images: 'ghcr.io/${{ github.repository }}'
+    images: 'ghcr.io/${{ github.repository }}'
 
 - name: 'Echo Result'
   run: echo '${{ steps.tags.outputs.tags }}'
@@ -64,19 +65,21 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 
 Coming Soon...
 
+To see this used in a release workflow, see: https://github.com/cssnr/cloudflare-purge-cache-action/blob/master/.github/workflows/release.yaml
+
 # Support
 
 For general help or to request a feature, see:
 
--   Q&A Discussion: https://github.com/smashedr/docker-tags-action/discussions/categories/q-a
--   Request a Feature: https://github.com/smashedr/docker-tags-action/discussions/categories/feature-requests
+- Q&A Discussion: https://github.com/smashedr/docker-tags-action/discussions/categories/q-a
+- Request a Feature: https://github.com/smashedr/docker-tags-action/discussions/categories/feature-requests
 
 If you are experiencing an issue/bug or getting unexpected results, you can:
 
--   Report an Issue: https://github.com/smashedr/docker-tags-action/issues
--   Chat with us on Discord: https://discord.gg/wXy6m2X8wY
--   Provide General
-    Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20JSON%20Value)
+- Report an Issue: https://github.com/smashedr/docker-tags-action/issues
+- Chat with us on Discord: https://discord.gg/wXy6m2X8wY
+- Provide General
+  Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20JSON%20Value)
 
 # Contributing
 
@@ -84,12 +87,15 @@ Currently, the best way to contribute to this project is to star this project on
 
 Additionally, you can support other GitHub Actions I have published:
 
--   [VirusTotal Action](https://github.com/cssnr/virustotal-action)
--   [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action)
--   [Update JSON Value Action](https://github.com/cssnr/update-json-value-action)
--   [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action)
--   [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action)
--   [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action)
--   [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action)
+- [VirusTotal Action](https://github.com/cssnr/virustotal-action)
+- [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action)
+- [Update JSON Value Action](https://github.com/cssnr/update-json-value-action)
+- [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action)
+- [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action)
+- [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action)
+- [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action)
+- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action)
 
 For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
+
+If you would like to submit a PR, please review the [CONTRIBUTING.md](CONTRIBUTING.md).
