@@ -33761,12 +33761,12 @@ const { parse } = __nccwpck_require__(1110)
             })
             core.summary.addRaw('### Docker Tags Action', true)
             core.summary.addRaw(
-                `Generated **${dockerTags.length / images.length}** Tags and **${dockerLabels.length / images.length}** Labels for **${images.length}** Images.`,
+                `Generated **${dockerTags.length / images.length}** Tag(s) and **${dockerLabels.length / images.length}** Label(s) for **${images.length}** Image(s).\n`,
                 true
             )
-            core.summary.addRaw('Docker Tags', true)
+            core.summary.addRaw(`Docker Tags - ${dockerTags.length}`, true)
             core.summary.addCodeBlock(dockerTags.join('\n'), 'plain')
-            core.summary.addRaw('Docker Labels', true)
+            core.summary.addRaw(`Docker Labels - ${dockerLabels.length}`, true)
             core.summary.addCodeBlock(dockerLabels.join('\n'), 'plain')
             core.summary.addRaw(inputs_table, true)
             core.summary.addRaw(
