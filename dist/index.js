@@ -33620,6 +33620,11 @@ const { parse } = __nccwpck_require__(1110)
         console.log('process.env:', process.env)
         console.log('github.context:', github.context)
 
+        const repo = github.context.payload.repository
+        console.log('name:', repo.name)
+        console.log('description:', repo.description)
+        console.log('html_url:', repo.html_url)
+
         console.log('github.context.ref:', github.context.ref)
         console.log('github.context.eventName:', github.context.eventName)
         console.log('prerelease:', github.context.payload.release?.prerelease)
@@ -33693,23 +33698,37 @@ const { parse } = __nccwpck_require__(1110)
         console.log('dockerTags:', dockerTags)
 
         // Process Labels
-        let collectedLabels = []
-        if (labels) {
-            const parsedLabels = parse(labels, {
-                delimiter: ',',
-                trim: true,
-                relax_column_count: true,
-            }).flat()
-            console.log('parsedLabels:', parsedLabels)
-            collectedLabels.push(...parsedLabels)
+        const defaultLabels = {
+            'org.opencontainers.image.created': new Date().toISOString(),
+            'org.opencontainers.image.description': repo.description,
+            'org.opencontainers.image.revision': github.context.sha,
+            'org.opencontainers.image.source': repo.html_url,
+            'org.opencontainers.image.title': repo.name,
+            'org.opencontainers.image.url': repo.html_url,
+            'org.opencontainers.image.version': ref,
         }
-        console.log('collectedLabels:', collectedLabels)
-        const allLabels = [...new Set(collectedLabels)]
-        console.log('allLabels:', allLabels)
+        const dockerLabels = []
+        for (const [key, value] of Object.entries(defaultLabels)) {
+            dockerLabels.push(`${key}=${value}`)
+        }
+        console.log('dockerLabels:', dockerLabels)
+        // let collectedLabels = []
+        // if (labels) {
+        //     const parsedLabels = parse(labels, {
+        //         delimiter: ',',
+        //         trim: true,
+        //         relax_column_count: true,
+        //     }).flat()
+        //     console.log('parsedLabels:', parsedLabels)
+        //     collectedLabels.push(...parsedLabels)
+        // }
+        // console.log('collectedLabels:', collectedLabels)
+        // const allLabels = [...new Set(collectedLabels)]
+        // console.log('allLabels:', allLabels)
 
         // Set Outputs
         core.setOutput('tags', dockerTags.join(seperator))
-        core.setOutput('labels', allLabels.join(seperator))
+        core.setOutput('labels', dockerLabels.join(seperator))
     } catch (e) {
         core.debug(e)
         core.info(e.message)

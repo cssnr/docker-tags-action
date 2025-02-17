@@ -18,22 +18,26 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
+      - name: "Debug event.json"
+        run: |
+          cat "${GITHUB_EVENT_PATH}"
+
       - name: "Test Local Action"
         id: test
         uses: ./
 
       - name: "Validate Outputs"
         run: |
-          echo "tags: '${{ steps.test.outputs.tags }}'"
+          echo -e "tags:\n${{ steps.test.outputs.tags }}"
           if [ -z '${{ steps.test.outputs.tags }}' ];then
             echo "No Output: tags"
             exit 1
           fi
-          echo "labels: '${{ steps.test.outputs.labels }}'"
-          #if [ -z '${{ steps.test.outputs.labels }}' ];then
-          #  echo "No Output: labels"
-          #  exit 1
-          #fi
+          echo -e "labels:\n${{ steps.test.outputs.labels }}"
+          if [ -z '${{ steps.test.outputs.labels }}' ];then
+            echo "No Output: labels"
+            exit 1
+          fi
 
   lint:
     name: "Lint"

@@ -17,5 +17,10 @@
     "head": {
       "ref": "feature-1"
     }
+  },
+  "repository": {
+    "name": "repository-name",
+    "description": "Example Repository Description",
+    "html_url": "https://github.com/smashedr/docker-tags-action"
   }
 }
