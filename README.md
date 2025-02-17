@@ -34,11 +34,17 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 | latest    | No       | `default`                          | Latest Tag: [true, false, default] \*     |
 | summary   | No       | `true`                             | Add Summary to Job                        |
 
+This works with no inputs, but you can customize the resulting tags and labels with inputs.
+
 ```yaml
 - name: 'Docker Tags'
   id: tags
   uses: smashedr/docker-tags-action@master
 ```
+
+**seperator** - Output seperator. Newline is default and that works as the input for the docker build actions.
+
+**latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
 
 ### tags
 
@@ -48,7 +54,7 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 | `push` / `other`  | `refs/heads/master` | `master` |
 | `pull_request`    | `refs/pull/1/merge` | `pr-1`   |
 
-This is the default tag added. To disable this set `default: false` (WIP).
+This is the default tag added which is also set as the version for the label.
 
 ### labels
 
@@ -71,8 +77,6 @@ labels: |
   org.opencontainers.image.licenses=
   org.opencontainers.image.authors=smashedr
 ```
-
-**latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
 
 ### Outputs
 

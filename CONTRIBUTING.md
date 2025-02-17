@@ -1,5 +1,8 @@
 # Contributing
 
+> [!WARNING]  
+> This guide is a work in progress and may not be complete.
+
 You should be using an IDE, otherwise start there...
 
 Formatting (this is done by you):
@@ -28,7 +31,7 @@ To run actions locally you need to install act: https://nektosact.com/installati
 ```shell
 npm install
 npm run build:watch
-act -j test
+act -j test -e event.json
 ```
 
 To see all available jobs run: `act -l`

@@ -4,6 +4,8 @@ const { parse } = require('csv-parse/sync')
 
 ;(async () => {
     try {
+        core.info(`🏳️ Starting Docker Tags Action`)
+
         // Debug
         // console.log('process.env:', process.env)
         // console.log('github.context:', github.context)
@@ -51,6 +53,7 @@ const { parse } = require('csv-parse/sync')
         console.log('spdx_id:', repo.license?.spdx_id)
 
         // Process Tags
+        core.info('⌛ Processing Tags')
         const collectedTags = []
         if (ref) {
             collectedTags.push(ref)
@@ -88,6 +91,7 @@ const { parse } = require('csv-parse/sync')
         console.log('dockerTags:', dockerTags)
 
         // Process Labels
+        core.info('⌛ Processing Labels')
         const defaultLabels = {
             'org.opencontainers.image.created': new Date().toISOString(),
             'org.opencontainers.image.description': repo.description,
@@ -133,6 +137,7 @@ const { parse } = require('csv-parse/sync')
         console.log('dockerLabels:', dockerLabels)
 
         // Set Outputs
+        core.info('📩 Setting Outputs')
         core.setOutput('tags', dockerTags.join(seperator))
         core.setOutput('labels', dockerLabels.join(seperator))
 
@@ -161,13 +166,15 @@ const { parse } = require('csv-parse/sync')
                 '\n[View Documentation](https://github.com/smashedr/docker-tags-action#readme) | '
             )
             core.summary.addRaw(
-                '\n[Report an issue or request a feature](https://github.com/smashedr/docker-tags-action/issues)',
+                '[Report an issue or request a feature](https://github.com/smashedr/docker-tags-action/issues)',
                 true
             )
             await core.summary.write()
         } else {
             core.info('⏩ Skipping Job Summary')
         }
+
+        core.info(`✅ \u001b[32;1mFinished Success`)
     } catch (e) {
         core.debug(e)
         core.info(e.message)
