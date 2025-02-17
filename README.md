@@ -41,7 +41,7 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 | `push` / `other`  | `refs/heads/master` | `master` |
 | `pull_request`    | `refs/pull/1/merge` | `pr-1`   |
 
-**labels** - WIP
+**labels** - Will allow adding/overriding default labels. WIP
 
 **latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
 
@@ -93,7 +93,58 @@ All outputs are seperated by the inputs `seperator` which defaults to a newline.
 
 ## Examples
 
-Coming Soon...
+```yaml
+name: 'Release'
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: 'Build'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      packages: write
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+
+      - name: 'Docker Tags'
+        id: tags
+        uses: smashedr/docker-tags-action@master
+        with:
+          images: 'ghcr.io/${{ github.repository }}'
+          extra: ${{ github.ref_name }}
+          latest: false
+
+      - name: 'Echo Tags'
+        run: |
+          echo -e "tags: \n${{ steps.tags.outputs.tags }}"
+          echo -e "labels: \n${{ steps.tags.outputs.labels }}"
+
+      - name: 'Docker Login'
+        uses: docker/login-action@v3
+        with:
+          registry: 'ghcr.io'
+          username: ${{ vars.GHCR_USER }}
+          password: ${{ secrets.GHCR_PASS }}
+
+      - name: 'Setup Buildx'
+        uses: docker/setup-buildx-action@v3
+
+      - name: 'Build and Push'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.tags.outputs.tags }}
+          labels: ${{ steps.tags.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+```
 
 To see this used in a release workflow, see: https://github.com/cssnr/cloudflare-purge-cache-action/blob/master/.github/workflows/release.yaml
 
