@@ -33,7 +33,7 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 | seperator | No       | `\n`                               | Output Seperator                          |
 | latest    | No       | `default`                          | Latest Tag: [true, false, default] \*     |
 
-**default** - Generate a default tag based on the event. WIP!
+**default** - Generates a default tag based on the event. WIP
 
 | Event             | Ref                 | Tags     |
 | ----------------- | ------------------- | -------- |
@@ -41,7 +41,11 @@ Generate Docker Tags. For a more detailed implementation see: https://github.com
 | `push` / `other`  | `refs/heads/master` | `master` |
 | `pull_request`    | `refs/pull/1/merge` | `pr-1`   |
 
+**labels** - WIP
+
 **latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
+
+With minimal inputs.
 
 ```yaml
 - name: 'Docker Tags'
@@ -67,9 +71,12 @@ With all inputs.
 
 ### Outputs
 
-| output | description              |
-| ------ | ------------------------ |
-| tags   | Tags Generated for Image |
+| output | description      |
+| ------ | ---------------- |
+| tags   | Generated Tags   |
+| labels | Generated Labels |
+
+All outputs are seperated by the inputs `seperator` which defaults to a newline.
 
 ```yaml
 - name: 'Docker Tags'

@@ -5,13 +5,8 @@ const { parse } = require('csv-parse/sync')
 ;(async () => {
     try {
         // Debug
-        console.log('process.env:', process.env)
-        console.log('github.context:', github.context)
-
-        const repo = github.context.payload.repository
-        console.log('name:', repo.name)
-        console.log('description:', repo.description)
-        console.log('html_url:', repo.html_url)
+        // console.log('process.env:', process.env)
+        // console.log('github.context:', github.context)
 
         console.log('github.context.ref:', github.context.ref)
         console.log('github.context.eventName:', github.context.eventName)
@@ -22,6 +17,9 @@ const { parse } = require('csv-parse/sync')
         if (github.context.ref.startsWith('refs/pull/')) {
             console.log('Pull Request Detected:', ref)
             ref = `pr-${ref}`
+        }
+        if (!ref) {
+            return core.setFailed(`Unable to parse ref: ${github.context.ref}`)
         }
         core.info(`ref: \u001b[32;1m${ref}`)
 
@@ -43,10 +41,15 @@ const { parse } = require('csv-parse/sync')
         console.log('latest:', latest)
 
         // Set Variables
+        const repo = github.context.payload.repository
+        console.log('name:', repo.name)
+        console.log('description:', repo.description)
+        console.log('html_url:', repo.html_url)
+        console.log('spdx_id:', repo.license?.spdx_id)
         // const version = semver.parse(ref)
         // console.log('version:', version)
 
-        // Collect Tags
+        // Process Tags
         const collectedTags = []
         if (ref) {
             collectedTags.push(ref)
@@ -56,11 +59,11 @@ const { parse } = require('csv-parse/sync')
                 github.context.eventName === 'release' &&
                 !github.context.payload.release?.prerelease
             ) {
-                console.log('\u001b[33;1mAdding latest tag on release.')
+                console.log('\u001b[33;1mAdding latest tag on: release')
                 collectedTags.push('latest')
             }
         } else if (latest === 'true') {
-            console.log('\u001b[33;1mAdding latest tag on true.')
+            console.log('\u001b[33;1mAdding latest tag on: true')
             collectedTags.push('latest')
         }
         if (tags) {
@@ -75,8 +78,6 @@ const { parse } = require('csv-parse/sync')
         console.log('collectedTags:', collectedTags)
         const allTags = [...new Set(collectedTags)]
         console.log('allTags:', allTags)
-
-        // Process Tags
         const dockerTags = []
         for (const image of images) {
             for (const tag of allTags) {
@@ -95,11 +96,10 @@ const { parse } = require('csv-parse/sync')
             'org.opencontainers.image.url': repo.html_url,
             'org.opencontainers.image.version': ref,
         }
-        const dockerLabels = []
-        for (const [key, value] of Object.entries(defaultLabels)) {
-            dockerLabels.push(`${key}=${value}`)
+        if (repo.license?.spdx_id) {
+            defaultLabels['org.opencontainers.image.licenses'] =
+                repo.license.spdx_id
         }
-        console.log('dockerLabels:', dockerLabels)
         // let collectedLabels = []
         // if (labels) {
         //     const parsedLabels = parse(labels, {
@@ -113,6 +113,11 @@ const { parse } = require('csv-parse/sync')
         // console.log('collectedLabels:', collectedLabels)
         // const allLabels = [...new Set(collectedLabels)]
         // console.log('allLabels:', allLabels)
+        const dockerLabels = []
+        for (const [key, value] of Object.entries(defaultLabels)) {
+            dockerLabels.push(`${key}=${value}`)
+        }
+        console.log('dockerLabels:', dockerLabels)
 
         // Set Outputs
         core.setOutput('tags', dockerTags.join(seperator))
