@@ -10,17 +10,16 @@
 
 # Docker Tags Action
 
-Generate Docker Tags. For a more detailed implementation see: https://github.com/docker/metadata-action
-
 - [Inputs](#Inputs)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
 - [Support](#Support)
 - [Contributing](#Contributing)
 
+Generate Docker Tags. For a more detailed implementation see: https://github.com/docker/metadata-action
+
 > [!NOTE]  
-> Please submit
-> a [Feature Request](https://github.com/smashedr/docker-tags-action/discussions/categories/feature-requests)
+> Please submit a [Feature Request](https://github.com/smashedr/docker-tags-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/smashedr/docker-tags-action/issues) if you find any bugs.
 
 ## Inputs
@@ -48,7 +47,7 @@ This works with no inputs, but you can customize the resulting tags and labels w
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 
-<details><summary>Example Summary</summary>
+<details><summary>📜 View Example Summary</summary>
 
 ---
 
