@@ -149,7 +149,7 @@ const { parse } = require('csv-parse/sync')
             })
             core.summary.addRaw('### Docker Tags Action', true)
             core.summary.addRaw(
-                `Generated **${dockerTags.length / images.length}** Tags and **${dockerLabels.length / images.length}** Labels for **${images.length}** Images.`,
+                `Generated **${dockerTags.length / images.length}** Tag(s) and **${dockerLabels.length / images.length}** Label(s) for **${images.length}** Image(s).\n`,
                 true
             )
             core.summary.addRaw('Docker Tags', true)
