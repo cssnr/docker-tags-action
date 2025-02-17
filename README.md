@@ -12,16 +12,16 @@
 
 Generate Docker Tags. For a more detailed implementation see: https://github.com/docker/metadata-action
 
-> [!NOTE]  
-> Please submit
-> a [Feature Request](https://github.com/smashedr/docker-tags-action/discussions/categories/feature-requests)
-> for new features or [Open an Issue](https://github.com/smashedr/docker-tags-action/issues) if you find any bugs.
-
 - [Inputs](#Inputs)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
 - [Support](#Support)
 - [Contributing](#Contributing)
+
+> [!NOTE]  
+> Please submit
+> a [Feature Request](https://github.com/smashedr/docker-tags-action/discussions/categories/feature-requests)
+> for new features or [Open an Issue](https://github.com/smashedr/docker-tags-action/issues) if you find any bugs.
 
 ## Inputs
 
@@ -81,19 +81,17 @@ org.opencontainers.image.authors=smashedr</code></pre>
 
 ### tags
 
-This is the default tag added which is also set as the version for the label.
-
 | Event             | Ref                 | Tags     |
 | ----------------- | ------------------- | -------- |
 | `tag` / `release` | `refs/tags/v1.0.0`  | `v1.0.0` |
 | `push` / `other`  | `refs/heads/master` | `master` |
 | `pull_request`    | `refs/pull/1/merge` | `pr-1`   |
 
-TODO/WIP: Add an option called `default` to disable or override the default tag.
+This is the default tag added which is also set as the version for the label.
+
+Coming Soon: Add an option called `default` to disable or override the default tag.
 
 ### labels
-
-These are the default labels. You can add them or remove them by providing a key with no value.
 
 ```shell
 org.opencontainers.image.description=Example Repository Description
@@ -104,6 +102,8 @@ org.opencontainers.image.url=https://github.com/smashedr/docker-tags-action
 org.opencontainers.image.version=v1.0.0
 org.opencontainers.image.licenses=GPL-3.0
 ```
+
+These are the default labels. You can add them or remove them by providing a key with no value.
 
 The description and license are only added if they are defined on your repository.
 
