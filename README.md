@@ -74,7 +74,7 @@ org.opencontainers.image.description=Docker Tags Action
 org.opencontainers.image.authors=smashedr</code></pre>
 <details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>images</td><td>ghcr.io/cssnr/docker-tags-action</td></tr><tr><td>tags</td><td>-</td></tr><tr><td>labels</td><td>org.opencontainers.image.licenses=,org.opencontainers.image.authors=smashedr</td></tr><tr><td>seperator</td><td>"\n"</td></tr><tr><td>latest</td><td>true</td></tr><tr><td>summary</td><td>true</td></tr></table></details>
 
-[View Documentation](https://github.com/cssnr/docker-tags-action/tree/refs/heads/updates?tab=readme-ov-file#readme) | [Report an Issue or Request a Feature](https://github.com/cssnr/docker-tags-action/issues)
+[View Documentation](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme) | [Report an Issue or Request a Feature](https://github.com/cssnr/docker-tags-action/issues)
 
 ---
 
