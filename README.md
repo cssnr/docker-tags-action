@@ -127,8 +127,6 @@ All outputs are seperated by the inputs `seperator` which defaults to a newline.
 - name: 'Docker Tags'
   id: tags
   uses: cssnr/docker-tags-action@v1
-  with:
-    images: 'ghcr.io/${{ github.repository }}'
 
 - name: 'Echo Result'
   run: |
@@ -180,7 +178,7 @@ jobs:
         uses: cssnr/docker-tags-action@v1
         with:
           images: 'ghcr.io/${{ github.repository }}'
-          extra: ${{ github.ref_name }}
+          tags: ${{ github.ref_name }}
           latest: false
 
       - name: 'Echo Tags'

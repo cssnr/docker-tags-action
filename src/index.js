@@ -14,7 +14,7 @@ const { parse } = require('csv-parse/sync')
         console.log('github.context.eventName:', github.context.eventName)
         console.log('prerelease:', github.context.payload.release?.prerelease)
 
-        // Parse ref
+        // Parse Ref
         let ref = github.context.ref.split('/')[2]
         if (github.context.ref.startsWith('refs/pull/')) {
             console.log('Pull Request Detected:', ref)
@@ -144,7 +144,7 @@ const { parse } = require('csv-parse/sync')
         core.setOutput('tags', dockerTags.join(seperator))
         core.setOutput('labels', dockerLabels.join(seperator))
 
-        // Job Summary
+        // Write Summary
         if (summary) {
             core.info('📝 Writing Job Summary')
 
@@ -153,18 +153,13 @@ const { parse } = require('csv-parse/sync')
                 `Generated **${dockerTags.length / images.length}** Tags and **${dockerLabels.length / images.length}** Labels for **${images.length}** Images.\n\n`
             )
 
-            // core.summary.addRaw(`Docker Tags ${dockerTags.length}\n`)
-            // core.summary.addCodeBlock(dockerTags.join('\n'), 'text')
-            // core.summary.addRaw(`Docker Labels ${dockerLabels.length}\n`)
-            // core.summary.addCodeBlock(dockerLabels.join('\n'), 'text')
-
             core.summary.addRaw('<details><summary>Docker Tags</summary>\n\n')
             core.summary.addCodeBlock(dockerTags.join('\n'), 'text')
-            core.summary.addRaw('\n\n</details>\n')
+            core.summary.addRaw('\n</details>\n')
 
             core.summary.addRaw('<details><summary>Docker Labels</summary>\n\n')
             core.summary.addCodeBlock(dockerLabels.join('\n'), 'text')
-            core.summary.addRaw('\n\n</details>\n')
+            core.summary.addRaw('\n</details>\n')
 
             core.summary.addRaw('<details><summary>Inputs</summary>')
             core.summary.addTable([
