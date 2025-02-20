@@ -163,7 +163,7 @@ async function writeSummary(inputs, tags, labels, ref) {
     core.summary.addRaw('## Docker Tags Action\n')
     core.summary.addRaw(
         `Generated **${tags.length}** Tags and **${labels.length}** Labels for ` +
-            `**${inputs.images.length}** Images for parsed ref: \`${ref}\`\n\n`
+            `**${inputs.images.length}** Images. Parsed ref: \`${ref}\`\n\n`
     )
 
     core.summary.addRaw('<details><summary>Docker Tags</summary>\n\n')
