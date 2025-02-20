@@ -1,19 +1,17 @@
+> [!WARNING]  
+> This guide is a not finished and therefore not complete.
+
 # Contributing
 
-> [!WARNING]  
-> This guide is a work in progress and may not be complete.
+Formatting:
 
-You should be using an IDE, otherwise start there...
+- Black (`.py`)
+- Prettier (`.yml`;`.yaml`;`.json`;`.md`)
 
-Formatting (this is done by you):
+Linting:
 
-- Black (.py)
-- Prettier (.yml;.yaml;.json;.md)
-
-Linting (this is checked by actions):
-
-- Flake8 (.py)
-- ShellCheck (.sh)
+- Flake8 (`.py`)
+- ShellCheck (`.sh`)
 
 ## Building
 

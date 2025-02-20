@@ -33616,7 +33616,7 @@ const { parse } = __nccwpck_require__(1110)
 
 ;(async () => {
     try {
-        core.info(`🏳️ Starting Docker Tags Action`)
+        core.info('🏳️ Starting Docker Tags Action')
 
         // Debug
         // console.log('process.env:', process.env)
@@ -33756,63 +33756,61 @@ const { parse } = __nccwpck_require__(1110)
         core.setOutput('tags', dockerTags.join(seperator))
         core.setOutput('labels', dockerLabels.join(seperator))
 
-        // Summary
+        // Job Summary
         if (summary) {
             core.info('📝 Writing Job Summary')
-            const inputs_table = gen_inputs_table({
-                images: images.join(','),
-                tags: tags.replaceAll('\n', ','),
-                labels: labels.replaceAll('\n', ','),
-                seperator: JSON.stringify(seperator),
-                latest: latest,
-                summary: summary,
-            })
-            core.summary.addRaw('### Docker Tags Action', true)
+
+            core.summary.addRaw('## Docker Tags Action\n')
             core.summary.addRaw(
-                `Generated **${dockerTags.length / images.length}** Tag(s) and **${dockerLabels.length / images.length}** Label(s) for **${images.length}** Image(s).\n`,
-                true
+                `Generated **${dockerTags.length / images.length}** Tag(s) and **${dockerLabels.length / images.length}** Label(s) for **${images.length}** Image(s).\n\n`
             )
-            core.summary.addRaw(`Docker Tags ${dockerTags.length}`, true)
-            core.summary.addCodeBlock(dockerTags.join('\n'), 'plain')
-            core.summary.addRaw(`Docker Labels ${dockerLabels.length}`, true)
-            core.summary.addCodeBlock(dockerLabels.join('\n'), 'plain')
-            core.summary.addRaw(inputs_table, true)
+            core.summary.addRaw(`Docker Tags ${dockerTags.length}\n`)
+            core.summary.addCodeBlock(dockerTags.join('\n'), 'text')
+            core.summary.addRaw(`Docker Labels ${dockerLabels.length}\n`)
+            core.summary.addCodeBlock(dockerLabels.join('\n'), 'text')
+
+            core.summary.addRaw('<details><summary>Inputs</summary>')
+            core.summary.addTable([
+                [
+                    { data: 'Input', header: true },
+                    { data: 'Value', header: true },
+                ],
+                [
+                    { data: 'images' },
+                    { data: `<code>${images.join(',')}</code>` },
+                ],
+                [
+                    { data: 'tags' },
+                    { data: `<code>${tags.replaceAll('\n', ',')}</code>` },
+                ],
+                [
+                    { data: 'labels' },
+                    { data: `<code>${labels.replaceAll('\n', ',')}</code>` },
+                ],
+                [
+                    { data: 'seperator' },
+                    { data: `<code>${JSON.stringify(seperator)}</code>` },
+                ],
+                [{ data: 'latest' }, { data: `<code>${latest}</code>` }],
+                [{ data: 'summary' }, { data: `<code>${summary}</code>` }],
+            ])
+            core.summary.addRaw('</details>\n')
+
+            const text = 'View Documentation, Report Issues or Request Features'
+            const link = 'https://github.com/cssnr/docker-tags-action'
             core.summary.addRaw(
-                '\n[View Documentation](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme) | '
-            )
-            core.summary.addRaw(
-                '[Report an Issue or Request a Feature](https://github.com/cssnr/docker-tags-action/issues)',
-                true
+                `\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`
             )
             await core.summary.write()
-        } else {
-            core.info('⏩ Skipping Job Summary')
         }
 
-        core.info(`✅ \u001b[32;1mFinished Success`)
+        core.info('✅ \u001b[32;1mFinished Success')
     } catch (e) {
         core.debug(e)
         core.info(e.message)
         core.setFailed(e.message)
     }
 })()
-
-/**
- * @function gen_inputs_table
- * @param {Object} inputs
- * @return String
- */
-function gen_inputs_table(inputs) {
-    const table = [
-        '<details><summary>Inputs</summary>',
-        '<table><tr><th>Input</th><th>Value</th></tr>',
-    ]
-    for (const [key, object] of Object.entries(inputs)) {
-        const value = object.toString() || '-'
-        table.push(`<tr><td>${key}</td><td>${value}</td></tr>`)
-    }
-    return table.join('') + '</table></details>'
-}
 
 module.exports = __webpack_exports__;
 /******/ })()

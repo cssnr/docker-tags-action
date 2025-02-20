@@ -11,6 +11,8 @@
 # Docker Tags Action
 
 - [Inputs](#Inputs)
+  - [Tags](#tags)
+  - [Labels](#labels)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
 - [Support](#Support)
@@ -33,7 +35,7 @@ For a more detailed implementation see: https://github.com/docker/metadata-actio
 | labels    | No       | _[see labels](#labels)_            | Extra Labels to Generate, CSV or Newline  |
 | seperator | No       | `\n`                               | Output Seperator                          |
 | latest    | No       | `default`                          | Latest Tag: [true, false, default] \*     |
-| summary   | No       | `true`                             | Add Summary to Job                        |
+| summary   | No       | `true`                             | Add Summary to Job \*                     |
 
 This works with no inputs, but you can customize the resulting tags and labels with inputs.
 
@@ -53,18 +55,16 @@ This works with no inputs, but you can customize the resulting tags and labels w
 
 ---
 
-### Docker Tags Action
-
 Generated **2** Tag(s) and **8** Label(s) for **1** Image(s).
 
 Docker Tags 2
 
-<pre lang="plain"><code>ghcr.io/cssnr/docker-tags-action:pr-4
+<pre lang="text"><code>ghcr.io/cssnr/docker-tags-action:pr-4
 ghcr.io/cssnr/docker-tags-action:latest</code></pre>
 
 Docker Labels 8
 
-<pre lang="plain"><code>org.opencontainers.image.created=2025-02-17T23:03:18.554Z
+<pre lang="text"><code>org.opencontainers.image.created=2025-02-17T23:03:18.554Z
 org.opencontainers.image.revision=b812bb5c006ecade3ff39b386c9174732bce9a30
 org.opencontainers.image.source=https://github.com/cssnr/docker-tags-action
 org.opencontainers.image.title=docker-tags-action
@@ -73,8 +73,6 @@ org.opencontainers.image.version=pr-4
 org.opencontainers.image.description=Docker Tags Action
 org.opencontainers.image.authors=smashedr</code></pre>
 <details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>images</td><td>ghcr.io/cssnr/docker-tags-action</td></tr><tr><td>tags</td><td>-</td></tr><tr><td>labels</td><td>org.opencontainers.image.licenses=,org.opencontainers.image.authors=smashedr</td></tr><tr><td>seperator</td><td>"\n"</td></tr><tr><td>latest</td><td>true</td></tr><tr><td>summary</td><td>true</td></tr></table></details>
-
-[View Documentation](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme) | [Report an Issue or Request a Feature](https://github.com/cssnr/docker-tags-action/issues)
 
 ---
 
@@ -116,7 +114,7 @@ labels: |
   org.opencontainers.image.authors=smashedr
 ```
 
-### Outputs
+## Outputs
 
 | output | description      |
 | ------ | ---------------- |
@@ -134,8 +132,8 @@ All outputs are seperated by the inputs `seperator` which defaults to a newline.
 
 - name: 'Echo Result'
   run: |
-    echo tags: '${{ steps.tags.outputs.tags }}'
-    echo labels: '${{ steps.tags.outputs.labels }}'
+    echo -e "tags: \n${{ steps.tags.outputs.tags }}"
+    echo -e "labels: \n${{ steps.tags.outputs.labels }}"
 ```
 
 ## Examples
@@ -233,14 +231,15 @@ Currently, the best way to contribute to this project is to star this project on
 
 Additionally, you can support other GitHub Actions I have published:
 
-- [VirusTotal Action](https://github.com/cssnr/virustotal-action)
-- [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action)
-- [Update JSON Value Action](https://github.com/cssnr/update-json-value-action)
-- [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action)
-- [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action)
-- [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action)
-- [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action)
-- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action)
+- [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action?tab=readme-ov-file#readme)
+- [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action?tab=readme-ov-file#readme)
+- [VirusTotal Action](https://github.com/cssnr/virustotal-action?tab=readme-ov-file#readme)
+- [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action?tab=readme-ov-file#readme)
+- [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action?tab=readme-ov-file#readme)
+- [Update JSON Value Action](https://github.com/cssnr/update-json-value-action?tab=readme-ov-file#readme)
+- [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action?tab=readme-ov-file#readme)
+- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action?tab=readme-ov-file#readme)
+- [Cloudflare Purge Cache Action](https://github.com/cssnr/cloudflare-purge-cache-action?tab=readme-ov-file#readme)
 
 For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
 
