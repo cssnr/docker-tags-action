@@ -120,6 +120,7 @@ const { parse } = require('csv-parse/sync')
         // Write Summary
         if (inputs.summary) {
             core.info('📝 Writing Job Summary')
+            await writeSummary(inputs, dockerTags, dockerLabels)
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
