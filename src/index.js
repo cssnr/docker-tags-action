@@ -202,13 +202,13 @@ async function writeSummary(inputs, dockerTags, dockerLabels) {
         [
             { data: 'tags' },
             {
-                data: `<code>${inputs.tags.replaceAll('\n', ',')}</code>`,
+                data: `<code>${inputs.tags.join(',')}</code>`,
             },
         ],
         [
             { data: 'labels' },
             {
-                data: `<code>${inputs.labels.replaceAll('\n', ',')}</code>`,
+                data: `<code>${inputs.labels.join(',')}</code>`,
             },
         ],
         [
