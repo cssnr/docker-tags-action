@@ -55,22 +55,22 @@ This works with no inputs, but you can customize the resulting tags and labels w
 
 ---
 
-Generated **2** Tags and **8** Labels for **1** Images.
+Generated **2** Tags and **8** Labels for **1** Images. Parsed ref: `pr-6`
 
 <details><summary>Docker Tags</summary>
 
-<pre lang="text"><code>ghcr.io/cssnr/docker-tags-action:pr-5
+<pre lang="text"><code>ghcr.io/cssnr/docker-tags-action:pr-6
 ghcr.io/cssnr/docker-tags-action:latest</code></pre>
 
 </details>
 <details><summary>Docker Labels</summary>
 
-<pre lang="text"><code>org.opencontainers.image.created=2025-02-20T01:18:34.927Z
-org.opencontainers.image.revision=f1737327c444af599bec806727ae6986adbc0f50
+<pre lang="text"><code>org.opencontainers.image.created=2025-02-20T02:33:28.010Z
+org.opencontainers.image.revision=fb2319bda85e745c78981bc0ec6b316f07b602b5
 org.opencontainers.image.source=https://github.com/cssnr/docker-tags-action
 org.opencontainers.image.title=docker-tags-action
 org.opencontainers.image.url=https://github.com/cssnr/docker-tags-action
-org.opencontainers.image.version=pr-5
+org.opencontainers.image.version=pr-6
 org.opencontainers.image.description=Generate Docker Tags and Labels for building Docker images with GitHub Actions.
 org.opencontainers.image.authors=smashedr</code></pre>
 
