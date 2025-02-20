@@ -33762,12 +33762,21 @@ const { parse } = __nccwpck_require__(1110)
 
             core.summary.addRaw('## Docker Tags Action\n')
             core.summary.addRaw(
-                `Generated **${dockerTags.length / images.length}** Tag(s) and **${dockerLabels.length / images.length}** Label(s) for **${images.length}** Image(s).\n\n`
+                `Generated **${dockerTags.length / images.length}** Tags and **${dockerLabels.length / images.length}** Labels for **${images.length}** Images.\n\n`
             )
-            core.summary.addRaw(`Docker Tags ${dockerTags.length}\n`)
+
+            // core.summary.addRaw(`Docker Tags ${dockerTags.length}\n`)
+            // core.summary.addCodeBlock(dockerTags.join('\n'), 'text')
+            // core.summary.addRaw(`Docker Labels ${dockerLabels.length}\n`)
+            // core.summary.addCodeBlock(dockerLabels.join('\n'), 'text')
+
+            core.summary.addRaw('<details><summary>Docker Tags</summary>\n\n')
             core.summary.addCodeBlock(dockerTags.join('\n'), 'text')
-            core.summary.addRaw(`Docker Labels ${dockerLabels.length}\n`)
+            core.summary.addRaw('\n\n</details>\n')
+
+            core.summary.addRaw('<details><summary>Docker Labels</summary>\n\n')
             core.summary.addCodeBlock(dockerLabels.join('\n'), 'text')
+            core.summary.addRaw('\n\n</details>\n')
 
             core.summary.addRaw('<details><summary>Inputs</summary>')
             core.summary.addTable([
