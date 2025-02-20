@@ -152,43 +152,6 @@ function parseLabels(inputs, ref, repo) {
 }
 
 /**
- * @function parseInputs
- * @return {{images: array, tags: array, labels: array, seperator: string, latest: string, summary: boolean}}
- */
-function parseInputs() {
-    /** @type {String[]} */
-    const images = parse(core.getInput('images', { required: true }), {
-        delimiter: ',',
-        trim: true,
-        relax_column_count: true,
-    }).flat()
-    console.log('images:', images)
-    /** @type {String[]} */
-    const tags = parse(core.getInput('tags'), {
-        delimiter: ',',
-        trim: true,
-        relax_column_count: true,
-    }).flat()
-    console.log('tags:', tags)
-    /** @type {String[]} */
-    const labels = parse(core.getInput('labels'), {
-        delimiter: ',',
-        trim: true,
-        relax_column_count: true,
-    }).flat()
-    console.log('labels:', labels)
-    return {
-        images: images,
-        tags: tags,
-        labels: labels,
-        seperator:
-            core.getInput('seperator', { trimWhitespace: false }) || `\n`,
-        latest: core.getInput('latest'),
-        summary: core.getBooleanInput('summary'),
-    }
-}
-
-/**
  * @function writeSummary
  * @param {Object} inputs
  * @param {String[]} tags
@@ -199,8 +162,8 @@ function parseInputs() {
 async function writeSummary(inputs, tags, labels, ref) {
     core.summary.addRaw('## Docker Tags Action\n')
     core.summary.addRaw(
-        `Generated **${tags.length}** Tags and **${labels.length}** Labels for **${inputs.images.length}** Images.` +
-            `\n\nParsed ref: \`${ref}\`\n\n`
+        `Generated **${tags.length}** Tags and **${labels.length}** Labels for ` +
+            `**${inputs.images.length}** Images for parsed ref: \`${ref}\`\n\n`
     )
 
     core.summary.addRaw('<details><summary>Docker Tags</summary>\n\n')
@@ -248,4 +211,41 @@ async function writeSummary(inputs, tags, labels, ref) {
     const link = 'https://github.com/cssnr/docker-tags-action'
     core.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`)
     await core.summary.write()
+}
+
+/**
+ * @function parseInputs
+ * @return {{images: array, tags: array, labels: array, seperator: string, latest: string, summary: boolean}}
+ */
+function parseInputs() {
+    /** @type {String[]} */
+    const images = parse(core.getInput('images', { required: true }), {
+        delimiter: ',',
+        trim: true,
+        relax_column_count: true,
+    }).flat()
+    console.log('images:', images)
+    /** @type {String[]} */
+    const tags = parse(core.getInput('tags'), {
+        delimiter: ',',
+        trim: true,
+        relax_column_count: true,
+    }).flat()
+    console.log('tags:', tags)
+    /** @type {String[]} */
+    const labels = parse(core.getInput('labels'), {
+        delimiter: ',',
+        trim: true,
+        relax_column_count: true,
+    }).flat()
+    console.log('labels:', labels)
+    return {
+        images: images,
+        tags: tags,
+        labels: labels,
+        seperator:
+            core.getInput('seperator', { trimWhitespace: false }) || `\n`,
+        latest: core.getInput('latest'),
+        summary: core.getBooleanInput('summary'),
+    }
 }
