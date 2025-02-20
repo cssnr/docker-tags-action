@@ -33625,7 +33625,7 @@ const { parse } = __nccwpck_require__(1110)
         console.log('github.context.eventName:', github.context.eventName)
         console.log('prerelease:', github.context.payload.release?.prerelease)
 
-        // Parse Ref
+        // Parse Ref: ref
         let ref = github.context.ref.split('/')[2]
         if (github.context.ref.startsWith('refs/pull/')) {
             console.log('Pull Request Detected:', ref)
@@ -33636,103 +33636,34 @@ const { parse } = __nccwpck_require__(1110)
         }
         core.info(`ref: \u001b[32;1m${ref}`)
 
-        // Process Inputs
+        // Process Inputs: inputs
         const inputs = parseInputs()
         console.log('inputs:', inputs)
 
-        // Set Variables
+        // Set Variables: repo
         const repo = github.context.payload.repository
         console.log('name:', repo.name)
         console.log('description:', repo.description)
         console.log('html_url:', repo.html_url)
         console.log('spdx_id:', repo.license?.spdx_id)
 
-        // Process Tags
+        // Process Tags: tags
         core.info('⌛ Processing Tags')
-        const collectedTags = []
-        if (ref) {
-            collectedTags.push(ref)
-        }
-        if (inputs.latest === 'default') {
-            if (
-                github.context.eventName === 'release' &&
-                !github.context.payload.release?.prerelease
-            ) {
-                console.log('\u001b[33;1mAdding latest tag on: release')
-                collectedTags.push('latest')
-            }
-        } else if (inputs.latest === 'true') {
-            console.log('\u001b[33;1mAdding latest tag on: true')
-            collectedTags.push('latest')
-        }
-        if (inputs.tags) {
-            console.log('inputs.tags:', inputs.tags)
-            collectedTags.push(...inputs.tags)
-        }
-        console.log('collectedTags:', collectedTags)
-        const allTags = [...new Set(collectedTags)]
-        console.log('allTags:', allTags)
-        const dockerTags = []
-        for (const image of inputs.images) {
-            for (const tag of allTags) {
-                dockerTags.push(`${image}:${tag}`)
-            }
-        }
-        console.log('dockerTags:', dockerTags)
+        const tags = parseTags(inputs, ref)
 
-        // Process Labels
+        // Process Labels: labels
         core.info('⌛ Processing Labels')
-        const defaultLabels = {
-            'org.opencontainers.image.created': new Date().toISOString(),
-            'org.opencontainers.image.revision': github.context.sha,
-            'org.opencontainers.image.source': repo.html_url,
-            'org.opencontainers.image.title': repo.name,
-            'org.opencontainers.image.url': repo.html_url,
-            'org.opencontainers.image.version': ref,
-        }
-        if (repo.description) {
-            defaultLabels['org.opencontainers.image.description'] =
-                repo.description
-        }
-        if (repo.license?.spdx_id) {
-            defaultLabels['org.opencontainers.image.licenses'] =
-                repo.license.spdx_id
-        }
-        // console.log('defaultLabels:', defaultLabels)
-        if (inputs.labels.length) {
-            console.log('inputs.labels:', inputs.labels)
-            for (const label of inputs.labels) {
-                if (!label.includes('=')) {
-                    return core.setFailed(
-                        `Label provided without an = symbol: ${label}`
-                    )
-                }
-                const [key, value] = label.split(/=(.*)/s).slice(0, 2)
-                if (value) {
-                    console.log(`\u001b[32;1mAdding: \u001b[0m${key}=${value}`)
-                    defaultLabels[key] = value
-                } else {
-                    console.log(`\u001b[31;1mDeleting: \u001b[0m${key}`)
-                    delete defaultLabels[key]
-                }
-            }
-        }
-        // console.log('defaultLabels:', defaultLabels)
-        const dockerLabels = []
-        for (const [key, value] of Object.entries(defaultLabels)) {
-            dockerLabels.push(`${key}=${value}`)
-        }
-        console.log('dockerLabels:', dockerLabels)
+        const labels = parseLabels(inputs, ref, repo)
 
         // Set Outputs
         core.info('📩 Setting Outputs')
-        core.setOutput('tags', dockerTags.join(inputs.seperator))
-        core.setOutput('labels', dockerLabels.join(inputs.seperator))
+        core.setOutput('tags', tags.join(inputs.seperator))
+        core.setOutput('labels', labels.join(inputs.seperator))
 
         // Write Summary
         if (inputs.summary) {
             core.info('📝 Writing Job Summary')
-            await writeSummary(inputs, dockerTags, dockerLabels)
+            await writeSummary(inputs, tags, labels)
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -33742,6 +33673,95 @@ const { parse } = __nccwpck_require__(1110)
         core.setFailed(e.message)
     }
 })()
+
+/**
+ * @function parseTags
+ * @param {Object} inputs
+ * @param {String} ref
+ * @return {String[]}
+ */
+function parseTags(inputs, ref) {
+    const tags = []
+    if (ref) {
+        tags.push(ref)
+    }
+    if (inputs.latest === 'default') {
+        if (
+            github.context.eventName === 'release' &&
+            !github.context.payload.release?.prerelease
+        ) {
+            console.log('\u001b[33;1mAdding latest tag on: release')
+            tags.push('latest')
+        }
+    } else if (inputs.latest === 'true') {
+        console.log('\u001b[33;1mAdding latest tag on: true')
+        tags.push('latest')
+    }
+    if (inputs.tags) {
+        console.log('inputs.tags:', inputs.tags)
+        tags.push(...inputs.tags)
+    }
+    console.log('tags:', tags)
+    const allTags = [...new Set(tags)]
+    console.log('allTags:', allTags)
+    const dockerTags = []
+    for (const image of inputs.images) {
+        for (const tag of allTags) {
+            dockerTags.push(`${image}:${tag}`)
+        }
+    }
+    console.log('dockerTags:', dockerTags)
+    return dockerTags
+}
+
+/**
+ * @function parseLabels
+ * @param {Object} inputs
+ * @param {String} ref
+ * @param {Object} repo
+ * @return {String[]}
+ */
+function parseLabels(inputs, ref, repo) {
+    const defaultLabels = {
+        'org.opencontainers.image.created': new Date().toISOString(),
+        'org.opencontainers.image.revision': github.context.sha,
+        'org.opencontainers.image.source': repo.html_url,
+        'org.opencontainers.image.title': repo.name,
+        'org.opencontainers.image.url': repo.html_url,
+        'org.opencontainers.image.version': ref,
+    }
+    if (repo.description) {
+        defaultLabels['org.opencontainers.image.description'] = repo.description
+    }
+    if (repo.license?.spdx_id) {
+        defaultLabels['org.opencontainers.image.licenses'] =
+            repo.license.spdx_id
+    }
+    // console.log('defaultLabels:', defaultLabels)
+    if (inputs.labels.length) {
+        console.log('inputs.labels:', inputs.labels)
+        for (const label of inputs.labels) {
+            if (!label.includes('=')) {
+                throw Error(`Label provided without an = symbol: ${label}`)
+            }
+            const [key, value] = label.split(/=(.*)/s).slice(0, 2)
+            if (value) {
+                console.log(`\u001b[32;1mAdding: \u001b[0m${key}=${value}`)
+                defaultLabels[key] = value
+            } else {
+                console.log(`\u001b[31;1mDeleting: \u001b[0m${key}`)
+                delete defaultLabels[key]
+            }
+        }
+    }
+    // console.log('defaultLabels:', defaultLabels)
+    const dockerLabels = []
+    for (const [key, value] of Object.entries(defaultLabels)) {
+        dockerLabels.push(`${key}=${value}`)
+    }
+    console.log('dockerLabels:', dockerLabels)
+    return dockerLabels
+}
 
 /**
  * @function parseInputs
@@ -33783,22 +33803,23 @@ function parseInputs() {
 /**
  * @function writeSummary
  * @param {Object} inputs
- * @param {String[]} dockerTags
- * @param {String[]} dockerLabels
+ * @param {String[]} tags
+ * @param {String[]} labels
  * @return {Promise<void>}
  */
-async function writeSummary(inputs, dockerTags, dockerLabels) {
+async function writeSummary(inputs, tags, labels) {
     core.summary.addRaw('## Docker Tags Action\n')
     core.summary.addRaw(
-        `Generated **${dockerTags.length}** Tags and **${dockerLabels.length}** Labels for **${inputs.images.length}** Images.\n\n`
+        `Generated **${tags.length}** Tags and **${labels.length}** Labels for **${inputs.images.length}** Images.` +
+            `\n\nParsed ref: \`${ref}\`\n\n`
     )
 
     core.summary.addRaw('<details><summary>Docker Tags</summary>\n\n')
-    core.summary.addCodeBlock(dockerTags.join('\n'), 'text')
+    core.summary.addCodeBlock(tags.join('\n'), 'text')
     core.summary.addRaw('\n</details>\n')
 
     core.summary.addRaw('<details><summary>Docker Labels</summary>\n\n')
-    core.summary.addCodeBlock(dockerLabels.join('\n'), 'text')
+    core.summary.addCodeBlock(labels.join('\n'), 'text')
     core.summary.addRaw('\n</details>\n')
 
     core.summary.addRaw('<details><summary>Inputs</summary>')
