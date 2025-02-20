@@ -33663,7 +33663,7 @@ const { parse } = __nccwpck_require__(1110)
         // Write Summary
         if (inputs.summary) {
             core.info('📝 Writing Job Summary')
-            await writeSummary(inputs, tags, labels)
+            await writeSummary(inputs, tags, labels, ref)
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -33805,9 +33805,10 @@ function parseInputs() {
  * @param {Object} inputs
  * @param {String[]} tags
  * @param {String[]} labels
+ * @param {String} ref
  * @return {Promise<void>}
  */
-async function writeSummary(inputs, tags, labels) {
+async function writeSummary(inputs, tags, labels, ref) {
     core.summary.addRaw('## Docker Tags Action\n')
     core.summary.addRaw(
         `Generated **${tags.length}** Tags and **${labels.length}** Labels for **${inputs.images.length}** Images.` +
