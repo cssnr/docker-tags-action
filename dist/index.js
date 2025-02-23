@@ -33654,11 +33654,13 @@ const { parse } = __nccwpck_require__(1110)
         // Process Labels: labels
         core.info('⌛ Processing Labels')
         const labels = parseLabels(inputs, ref, repo)
+        const annotations = labels.map((s) => `manifest:${s}`)
 
         // Set Outputs
         core.info('📩 Setting Outputs')
         core.setOutput('tags', tags.join(inputs.seperator))
         core.setOutput('labels', labels.join(inputs.seperator))
+        core.setOutput('annotations', annotations.join(inputs.seperator))
 
         // Write Summary
         if (inputs.summary) {

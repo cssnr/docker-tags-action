@@ -43,6 +43,11 @@ jobs:
             echo "No Output: labels"
             exit 1
           fi
+          echo -e "annotations:\n${{ steps.test.outputs.annotations }}"
+          if [ -z '${{ steps.test.outputs.annotations }}' ];then
+            echo "No Output: annotations"
+            exit 1
+          fi
 
   lint:
     name: "Lint"
