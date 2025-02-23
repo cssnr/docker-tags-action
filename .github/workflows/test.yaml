@@ -43,6 +43,11 @@ jobs:
             echo "No Output: labels"
             exit 1
           fi
+          echo -e "annotations:\n${{ steps.test.outputs.annotations }}"
+          if [ -z '${{ steps.test.outputs.annotations }}' ];then
+            echo "No Output: annotations"
+            exit 1
+          fi
 
   lint:
     name: "Lint"
@@ -57,11 +62,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          #cache: npm
 
-      - name: "ESLint"
+      - name: "Install"
+        id: install
         run: |
           npm install
+
+      - name: "ESLint"
+        if: ${{ steps.install.outcome == 'success' }}
+        run: |
           npm run lint
+
+      - name: "Prettier"
+        if: ${{ steps.install.outcome == 'success' }}
+        run: |
+          npm run prettier
 
   build:
     name: "Build"

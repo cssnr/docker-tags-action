@@ -4110,18 +4110,18 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // pkg/dist-src/index.js
-var dist_src_exports = {};
-__export(dist_src_exports, {
+var index_exports = {};
+__export(index_exports, {
   GraphqlResponseError: () => GraphqlResponseError,
   graphql: () => graphql2,
   withCustomRequest: () => withCustomRequest
 });
-module.exports = __toCommonJS(dist_src_exports);
+module.exports = __toCommonJS(index_exports);
 var import_request3 = __nccwpck_require__(8636);
 var import_universal_user_agent = __nccwpck_require__(3843);
 
 // pkg/dist-src/version.js
-var VERSION = "7.1.0";
+var VERSION = "7.1.1";
 
 // pkg/dist-src/with-defaults.js
 var import_request2 = __nccwpck_require__(8636);
@@ -4169,8 +4169,7 @@ function graphql(request2, query, options) {
       );
     }
     for (const key in options) {
-      if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key))
-        continue;
+      if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key)) continue;
       return Promise.reject(
         new Error(
           `[@octokit/graphql] "${key}" cannot be used as variable name`
@@ -33619,46 +33618,56 @@ const { parse } = __nccwpck_require__(1110)
         core.info('🏳️ Starting Docker Tags Action')
 
         // Debug
+        core.startGroup('Debug')
         // console.log('process.env:', process.env)
         // console.log('github.context:', github.context)
         console.log('github.context.ref:', github.context.ref)
         console.log('github.context.eventName:', github.context.eventName)
         console.log('prerelease:', github.context.payload.release?.prerelease)
+        core.endGroup() // Debug
 
         // Parse Ref: ref
         let ref = github.context.ref.split('/')[2]
         if (github.context.ref.startsWith('refs/pull/')) {
-            console.log('Pull Request Detected:', ref)
+            core.info(`Pull Request: \u001b[36m${ref}`)
             ref = `pr-${ref}`
         }
         if (!ref) {
             return core.setFailed(`Unable to parse ref: ${github.context.ref}`)
         }
-        core.info(`ref: \u001b[32;1m${ref}`)
+        core.info(`Parsed ref: \u001b[36m${ref}`)
 
         // Process Inputs: inputs
+        core.startGroup('Inputs')
         const inputs = parseInputs()
         console.log('inputs:', inputs)
+        core.endGroup() // Inputs
 
         // Set Variables: repo
+        core.startGroup('Repository')
         const repo = github.context.payload.repository
         console.log('name:', repo.name)
         console.log('description:', repo.description)
         console.log('html_url:', repo.html_url)
         console.log('spdx_id:', repo.license?.spdx_id)
+        core.endGroup() // Repository
 
         // Process Tags: tags
-        core.info('⌛ Processing Tags')
+        core.startGroup('Processing Tags')
         const tags = parseTags(inputs, ref)
+        core.endGroup() // Repository
 
         // Process Labels: labels
-        core.info('⌛ Processing Labels')
+        core.startGroup('Processing Labels')
         const labels = parseLabels(inputs, ref, repo)
+        const annotations = labels.map((s) => `manifest:${s}`)
+        core.endGroup() // Repository
 
         // Set Outputs
         core.info('📩 Setting Outputs')
         core.setOutput('tags', tags.join(inputs.seperator))
         core.setOutput('labels', labels.join(inputs.seperator))
+        core.setOutput('annotations', annotations.join(inputs.seperator))
 
         // Write Summary
         if (inputs.summary) {

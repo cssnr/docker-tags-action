@@ -120,10 +120,11 @@ labels: |
 
 ## Outputs
 
-| output | description      |
-| ------ | ---------------- |
-| tags   | Generated Tags   |
-| labels | Generated Labels |
+| output      | description           |
+| ----------- | --------------------- |
+| tags        | Generated Tags        |
+| labels      | Generated Labels      |
+| annotations | Generated Annotations |
 
 All outputs are seperated by the inputs `seperator` which defaults to a newline.
 
@@ -136,6 +137,7 @@ All outputs are seperated by the inputs `seperator` which defaults to a newline.
   run: |
     echo -e "tags: \n${{ steps.tags.outputs.tags }}"
     echo -e "labels: \n${{ steps.tags.outputs.labels }}"
+    echo -e "annotations: \n${{ steps.tags.outputs.annotations }}"
 ```
 
 ## Examples
@@ -240,8 +242,9 @@ Additionally, you can support other GitHub Actions I have published:
 - [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action?tab=readme-ov-file#readme)
 - [Update JSON Value Action](https://github.com/cssnr/update-json-value-action?tab=readme-ov-file#readme)
 - [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action?tab=readme-ov-file#readme)
-- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action?tab=readme-ov-file#readme)
 - [Cloudflare Purge Cache Action](https://github.com/cssnr/cloudflare-purge-cache-action?tab=readme-ov-file#readme)
+- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action?tab=readme-ov-file#readme)
+- [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 
 For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
 
