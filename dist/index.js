@@ -33636,7 +33636,7 @@ const { parse } = __nccwpck_require__(1110)
         if (!ref) {
             return core.setFailed(`Unable to parse ref: ${github.context.ref}`)
         }
-        core.info(`Parsed ref: \u001b[32m${ref}`)
+        core.info(`Parsed ref: \u001b[36m${ref}`)
 
         // Process Inputs: inputs
         core.startGroup('Inputs')
