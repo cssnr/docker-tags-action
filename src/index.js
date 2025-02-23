@@ -7,11 +7,13 @@ const { parse } = require('csv-parse/sync')
         core.info('🏳️ Starting Docker Tags Action')
 
         // Debug
+        core.startGroup('Debug')
         // console.log('process.env:', process.env)
         // console.log('github.context:', github.context)
         console.log('github.context.ref:', github.context.ref)
         console.log('github.context.eventName:', github.context.eventName)
         console.log('prerelease:', github.context.payload.release?.prerelease)
+        core.endGroup() // Debug
 
         // Parse Ref: ref
         let ref = github.context.ref.split('/')[2]
@@ -25,24 +27,32 @@ const { parse } = require('csv-parse/sync')
         core.info(`ref: \u001b[32;1m${ref}`)
 
         // Process Inputs: inputs
+        core.startGroup('Inputs')
         const inputs = parseInputs()
         console.log('inputs:', inputs)
+        core.endGroup() // Inputs
 
         // Set Variables: repo
+        core.startGroup('Repository')
         const repo = github.context.payload.repository
         console.log('name:', repo.name)
         console.log('description:', repo.description)
         console.log('html_url:', repo.html_url)
         console.log('spdx_id:', repo.license?.spdx_id)
+        core.endGroup() // Repository
 
         // Process Tags: tags
         core.info('⌛ Processing Tags')
+        core.startGroup('Tags')
         const tags = parseTags(inputs, ref)
+        core.endGroup() // Repository
 
         // Process Labels: labels
         core.info('⌛ Processing Labels')
+        core.startGroup('Labels')
         const labels = parseLabels(inputs, ref, repo)
         const annotations = labels.map((s) => `manifest:${s}`)
+        core.endGroup() // Repository
 
         // Set Outputs
         core.info('📩 Setting Outputs')
