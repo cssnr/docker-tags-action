@@ -33630,13 +33630,13 @@ const { parse } = __nccwpck_require__(1110)
         // Parse Ref: ref
         let ref = github.context.ref.split('/')[2]
         if (github.context.ref.startsWith('refs/pull/')) {
-            console.log('Pull Request Detected:', ref)
+            core.info(`Pull Request: \u001b[36m${ref}`)
             ref = `pr-${ref}`
         }
         if (!ref) {
             return core.setFailed(`Unable to parse ref: ${github.context.ref}`)
         }
-        core.info(`ref: \u001b[32;1m${ref}`)
+        core.info(`Parsed ref: \u001b[32m${ref}`)
 
         // Process Inputs: inputs
         core.startGroup('Inputs')
@@ -33654,14 +33654,12 @@ const { parse } = __nccwpck_require__(1110)
         core.endGroup() // Repository
 
         // Process Tags: tags
-        core.info('⌛ Processing Tags')
-        core.startGroup('Tags')
+        core.startGroup('Processing Tags')
         const tags = parseTags(inputs, ref)
         core.endGroup() // Repository
 
         // Process Labels: labels
-        core.info('⌛ Processing Labels')
-        core.startGroup('Labels')
+        core.startGroup('Processing Labels')
         const labels = parseLabels(inputs, ref, repo)
         const annotations = labels.map((s) => `manifest:${s}`)
         core.endGroup() // Repository
