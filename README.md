@@ -52,7 +52,7 @@ This works with no inputs, but you can customize the resulting tags and labels w
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 
-<details><summary>📜 View Example Summary</summary>
+<details><summary>👀 View Example Summary</summary>
 
 ---
 
