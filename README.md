@@ -29,14 +29,14 @@ For a more detailed implementation see: https://github.com/docker/metadata-actio
 
 ## Inputs
 
-| input     | required | default                            | description                               |
-| --------- | -------- | ---------------------------------- | ----------------------------------------- |
-| images    | No       | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline |
-| tags      | No       | _[see tags](#tags)_                | Extra Tags to Generate, CSV or Newline    |
-| labels    | No       | _[see labels](#labels)_            | Extra Labels to Generate, CSV or Newline  |
-| seperator | No       | `\n`                               | Output Seperator                          |
-| latest    | No       | `default`                          | Latest Tag: [true, false, default] \*     |
-| summary   | No       | `true`                             | Add Summary to Job \*                     |
+| input     | required | default                            | description                                 |
+| --------- | :------: | ---------------------------------- | ------------------------------------------- |
+| images    |    -     | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline   |
+| tags      |    -     | _[see tags](#tags)_                | Extra Tags to Generate, CSV or Newline      |
+| labels    |    -     | _[see labels](#labels)_            | Extra Labels to Generate, CSV or Newline    |
+| seperator |    -     | `\n`                               | Output Seperator                            |
+| latest    |    -     | `default`                          | Latest Tag: [`true`, `false`, `default`] \* |
+| summary   |    -     | `true`                             | Add Summary to Job \*                       |
 
 This works with no inputs, but you can customize the resulting tags and labels with inputs.
 
