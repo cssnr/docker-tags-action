@@ -1,5 +1,6 @@
 [![Release](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/docker-tags-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/lint.yaml?logo=github&logoColor=white&label=lint)](https://github.com/cssnr/docker-tags-action/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_docker-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_docker-tags-action)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/docker-tags-action?logo=github)](https://github.com/cssnr/docker-tags-action/releases/latest)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/docker-tags-action?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/docker-tags-action/graphs/commit-activity)
@@ -81,6 +82,10 @@ org.opencontainers.image.authors=smashedr</code></pre>
 ---
 
 </details>
+
+To see a workflow run you can view a recent
+[test.yaml workflow run](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml)
+_(requires login)_.
 
 ### tags
 
@@ -233,6 +238,8 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 
 Currently, the best way to contribute to this project is to star this project on GitHub.
 
+If you would like to submit a PR, please review the [CONTRIBUTING.md](CONTRIBUTING.md).
+
 Additionally, you can support other GitHub Actions I have published:
 
 - [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action?tab=readme-ov-file#readme)
@@ -247,5 +254,3 @@ Additionally, you can support other GitHub Actions I have published:
 - [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 
 For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
-
-If you would like to submit a PR, please review the [CONTRIBUTING.md](CONTRIBUTING.md).
