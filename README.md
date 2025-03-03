@@ -1,5 +1,6 @@
 [![Release](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/docker-tags-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/lint.yaml?logo=github&logoColor=white&label=lint)](https://github.com/cssnr/docker-tags-action/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_docker-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_docker-tags-action)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/docker-tags-action?logo=github)](https://github.com/cssnr/docker-tags-action/releases/latest)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/docker-tags-action?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/docker-tags-action/graphs/commit-activity)
@@ -28,14 +29,14 @@ For a more detailed implementation see: https://github.com/docker/metadata-actio
 
 ## Inputs
 
-| input     | required | default                            | description                               |
-| --------- | -------- | ---------------------------------- | ----------------------------------------- |
-| images    | No       | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline |
-| tags      | No       | _[see tags](#tags)_                | Extra Tags to Generate, CSV or Newline    |
-| labels    | No       | _[see labels](#labels)_            | Extra Labels to Generate, CSV or Newline  |
-| seperator | No       | `\n`                               | Output Seperator                          |
-| latest    | No       | `default`                          | Latest Tag: [true, false, default] \*     |
-| summary   | No       | `true`                             | Add Summary to Job \*                     |
+| input     | required | default                            | description                                 |
+| --------- | :------: | ---------------------------------- | ------------------------------------------- |
+| images    |    -     | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline   |
+| tags      |    -     | _[see tags](#tags)_                | Extra Tags to Generate, CSV or Newline      |
+| labels    |    -     | _[see labels](#labels)_            | Extra Labels to Generate, CSV or Newline    |
+| seperator |    -     | `\n`                               | Output Seperator                            |
+| latest    |    -     | `default`                          | Latest Tag: [`true`, `false`, `default`] \* |
+| summary   |    -     | `true`                             | Add Summary to Job \*                       |
 
 This works with no inputs, but you can customize the resulting tags and labels with inputs.
 
@@ -51,7 +52,7 @@ This works with no inputs, but you can customize the resulting tags and labels w
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 
-<details><summary>📜 View Example Summary</summary>
+<details><summary>👀 View Example Summary</summary>
 
 ---
 
@@ -81,6 +82,9 @@ org.opencontainers.image.authors=smashedr</code></pre>
 ---
 
 </details>
+
+To see a workflow run you can view a recent
+[test.yaml run](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml) _(requires login)_.
 
 ### tags
 
@@ -226,12 +230,13 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 
 - Report an Issue: https://github.com/cssnr/docker-tags-action/issues
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
-- Provide General
-  Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20JSON%20Value)
+- Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20JSON%20Value)
 
 # Contributing
 
 Currently, the best way to contribute to this project is to star this project on GitHub.
+
+If you would like to submit a PR, please review the [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Additionally, you can support other GitHub Actions I have published:
 
@@ -247,5 +252,3 @@ Additionally, you can support other GitHub Actions I have published:
 - [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 
 For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
-
-If you would like to submit a PR, please review the [CONTRIBUTING.md](CONTRIBUTING.md).
