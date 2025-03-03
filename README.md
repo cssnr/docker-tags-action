@@ -84,8 +84,7 @@ org.opencontainers.image.authors=smashedr</code></pre>
 </details>
 
 To see a workflow run you can view a recent
-[test.yaml run](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml)
-_(requires login)_.
+[test.yaml run](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml) _(requires login)_.
 
 ### tags
 
@@ -231,8 +230,7 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 
 - Report an Issue: https://github.com/cssnr/docker-tags-action/issues
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
-- Provide General
-  Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20JSON%20Value)
+- Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20JSON%20Value)
 
 # Contributing
 
