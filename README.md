@@ -88,8 +88,7 @@ org.opencontainers.image.authors=smashedr</code></pre>
 
 </details>
 
-To see a workflow run you can view a recent
-[test.yaml run](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml) _(requires login)_.
+To view a workflow run, click on a recent [Test](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml) job _(requires login)_.
 
 ### docker tags
 
