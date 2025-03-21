@@ -34,14 +34,14 @@ For a more detailed implementation see: https://github.com/docker/metadata-actio
 
 ## Inputs
 
-| input     | required | default                            | description                                 |
-| --------- | :------: | ---------------------------------- | ------------------------------------------- |
-| images    |    -     | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline   |
-| tags      |    -     | _[see tags](#docker-tags)_         | Extra Tags to Generate, CSV or Newline      |
-| labels    |    -     | _[see labels](#docker-labels)_     | Extra Labels to Generate, CSV or Newline    |
-| seperator |    -     | `\n`                               | Output Seperator                            |
-| latest    |    -     | `default`                          | Latest Tag: [`true`, `false`, `default`] \* |
-| summary   |    -     | `true`                             | Add Summary to Job \*                       |
+| Input     | Req. | Default&nbsp;Value                 | Input&nbsp;Description                      |
+| :-------- | :--: | :--------------------------------- | :------------------------------------------ |
+| images    |  -   | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline   |
+| tags      |  -   | _[see tags](#docker-tags)_         | Extra Tags to Generate, CSV or Newline      |
+| labels    |  -   | _[see labels](#docker-labels)_     | Extra Labels to Generate, CSV or Newline    |
+| seperator |  -   | `\n`                               | Output Seperator                            |
+| latest    |  -   | `default`                          | Latest Tag: [`true`, `false`, `default`] \* |
+| summary   |  -   | `true`                             | Add Summary to Job \*                       |
 
 This works with no inputs, but you can customize the resulting tags and labels with inputs.
 
@@ -94,7 +94,7 @@ To see a workflow run you can view a recent
 ### docker tags
 
 | Event             | Ref                 | Tags     |
-| ----------------- | ------------------- | -------- |
+| :---------------- | :------------------ | :------- |
 | `tag` / `release` | `refs/tags/v1.0.0`  | `v1.0.0` |
 | `push` / `other`  | `refs/heads/master` | `master` |
 | `pull_request`    | `refs/pull/1/merge` | `pr-1`   |
@@ -129,11 +129,11 @@ labels: |
 
 ## Outputs
 
-| output      | description           |
-| ----------- | --------------------- |
-| tags        | Generated Tags        |
-| labels      | Generated Labels      |
-| annotations | Generated Annotations |
+| Output      | Output&nbsp;Description |
+| :---------- | :---------------------- |
+| tags        | Generated Tags          |
+| labels      | Generated Labels        |
+| annotations | Generated Annotations   |
 
 All outputs are seperated by the inputs `seperator` which defaults to a newline.
 
@@ -252,6 +252,8 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
 - Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20JSON%20Value)
 
+For more information, see the CSSNR [SUPPORT.md](https://github.com/cssnr/.github/blob/master/.github/SUPPORT.md#support).
+
 # Contributing
 
 Currently, the best way to contribute to this project is to star this project on GitHub.
@@ -270,5 +272,7 @@ Additionally, you can support other GitHub Actions I have published:
 - [Cloudflare Purge Cache Action](https://github.com/cssnr/cloudflare-purge-cache-action?tab=readme-ov-file#readme)
 - [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action?tab=readme-ov-file#readme)
 - [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
+- [Package Changelog Action](https://github.com/cssnr/package-changelog-action?tab=readme-ov-file#readme)
+- [NPM Outdated Check Action](https://github.com/cssnr/npm-outdated-action?tab=readme-ov-file#readme)
 
 For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
