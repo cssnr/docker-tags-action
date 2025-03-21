@@ -58,10 +58,15 @@ const { parse } = require('csv-parse/sync')
         core.setOutput('labels', labels.join(config.seperator))
         core.setOutput('annotations', annotations.join(config.seperator))
 
-        // Write Summary
+        // Summary
         if (config.summary) {
             core.info('📝 Writing Job Summary')
-            await writeSummary(config, tags, labels, ref)
+            try {
+                await addSummary(config, tags, labels, ref)
+            } catch (e) {
+                console.log(e)
+                core.error(`Error writing Job Summary ${e.message}`)
+            }
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -162,14 +167,14 @@ function parseLabels(config, ref, repo) {
 }
 
 /**
- * @function writeSummary
+ * Add Job Summary
  * @param {Config} config
  * @param {String[]} tags
  * @param {String[]} labels
  * @param {String} ref
  * @return {Promise<void>}
  */
-async function writeSummary(config, tags, labels, ref) {
+async function addSummary(config, tags, labels, ref) {
     core.summary.addRaw('## Docker Tags Action\n')
     core.summary.addRaw(
         `Generated **${tags.length}** Tags and **${labels.length}** Labels for ` +
@@ -183,39 +188,6 @@ async function writeSummary(config, tags, labels, ref) {
     core.summary.addRaw('<details><summary>Docker Labels</summary>\n\n')
     core.summary.addCodeBlock(labels.join('\n'), 'text')
     core.summary.addRaw('\n</details>\n')
-
-    // core.summary.addRaw('<details><summary>Config</summary>')
-    // core.summary.addTable([
-    //     [
-    //         { data: 'Input', header: true },
-    //         { data: 'Value', header: true },
-    //     ],
-    //     [
-    //         { data: 'images' },
-    //         { data: `<code>${config.images.join(',')}</code>` },
-    //     ],
-    //     [
-    //         { data: 'tags' },
-    //         {
-    //             data: `<code>${config.tags.join(',')}</code>`,
-    //         },
-    //     ],
-    //     [
-    //         { data: 'labels' },
-    //         {
-    //             data: `<code>${config.labels.join(',')}</code>`,
-    //         },
-    //     ],
-    //     [
-    //         { data: 'seperator' },
-    //         {
-    //             data: `<code>${JSON.stringify(config.seperator)}</code>`,
-    //         },
-    //     ],
-    //     [{ data: 'latest' }, { data: `<code>${config.latest}</code>` }],
-    //     [{ data: 'summary' }, { data: `<code>${config.summary}</code>` }],
-    // ])
-    // core.summary.addRaw('</details>\n')
 
     const yaml = Object.entries(config)
         .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
