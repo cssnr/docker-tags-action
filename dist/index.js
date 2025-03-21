@@ -3557,11 +3557,11 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // pkg/dist-src/index.js
-var dist_src_exports = {};
-__export(dist_src_exports, {
+var index_exports = {};
+__export(index_exports, {
   Octokit: () => Octokit
 });
-module.exports = __toCommonJS(dist_src_exports);
+module.exports = __toCommonJS(index_exports);
 var import_universal_user_agent = __nccwpck_require__(3843);
 var import_before_after_hook = __nccwpck_require__(2732);
 var import_request = __nccwpck_require__(8636);
@@ -3569,7 +3569,7 @@ var import_graphql = __nccwpck_require__(7);
 var import_auth_token = __nccwpck_require__(7864);
 
 // pkg/dist-src/version.js
-var VERSION = "5.2.0";
+var VERSION = "5.2.1";
 
 // pkg/dist-src/index.js
 var noop = () => {
@@ -13008,7 +13008,7 @@ module.exports = {
 
 
 const { parseSetCookie } = __nccwpck_require__(8915)
-const { stringify, getHeadersList } = __nccwpck_require__(3834)
+const { stringify } = __nccwpck_require__(3834)
 const { webidl } = __nccwpck_require__(4222)
 const { Headers } = __nccwpck_require__(6349)
 
@@ -13084,14 +13084,13 @@ function getSetCookies (headers) {
 
   webidl.brandCheck(headers, Headers, { strict: false })
 
-  const cookies = getHeadersList(headers).cookies
+  const cookies = headers.getSetCookie()
 
   if (!cookies) {
     return []
   }
 
-  // In older versions of undici, cookies is a list of name:value.
-  return cookies.map((pair) => parseSetCookie(Array.isArray(pair) ? pair[1] : pair))
+  return cookies.map((pair) => parseSetCookie(pair))
 }
 
 /**
@@ -13519,14 +13518,15 @@ module.exports = {
 /***/ }),
 
 /***/ 3834:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+/***/ ((module) => {
 
 "use strict";
 
 
-const assert = __nccwpck_require__(2613)
-const { kHeadersList } = __nccwpck_require__(6443)
-
+/**
+ * @param {string} value
+ * @returns {boolean}
+ */
 function isCTLExcludingHtab (value) {
   if (value.length === 0) {
     return false
@@ -13787,31 +13787,13 @@ function stringify (cookie) {
   return out.join('; ')
 }
 
-let kHeadersListNode
-
-function getHeadersList (headers) {
-  if (headers[kHeadersList]) {
-    return headers[kHeadersList]
-  }
-
-  if (!kHeadersListNode) {
-    kHeadersListNode = Object.getOwnPropertySymbols(headers).find(
-      (symbol) => symbol.description === 'headers list'
-    )
-
-    assert(kHeadersListNode, 'Headers cannot be parsed')
-  }
-
-  const headersList = headers[kHeadersListNode]
-  assert(headersList)
-
-  return headersList
-}
-
 module.exports = {
   isCTLExcludingHtab,
-  stringify,
-  getHeadersList
+  validateCookieName,
+  validateCookiePath,
+  validateCookieValue,
+  toIMFDate,
+  stringify
 }
 
 
@@ -17815,6 +17797,7 @@ const {
   isValidHeaderName,
   isValidHeaderValue
 } = __nccwpck_require__(5523)
+const util = __nccwpck_require__(9023)
 const { webidl } = __nccwpck_require__(4222)
 const assert = __nccwpck_require__(2613)
 
@@ -18368,6 +18351,9 @@ Object.defineProperties(Headers.prototype, {
   [Symbol.toStringTag]: {
     value: 'Headers',
     configurable: true
+  },
+  [util.inspect.custom]: {
+    enumerable: false
   }
 })
 
@@ -27544,6 +27530,20 @@ class Pool extends PoolBase {
       ? { ...options.interceptors }
       : undefined
     this[kFactory] = factory
+
+    this.on('connectionError', (origin, targets, error) => {
+      // If a connection error occurs, we remove the client from the pool,
+      // and emit a connectionError event. They will not be re-used.
+      // Fixes https://github.com/nodejs/undici/issues/3895
+      for (const target of targets) {
+        // Do not use kRemoveClient here, as it will close the client,
+        // but the client cannot be closed in this state.
+        const idx = this[kClients].indexOf(target)
+        if (idx !== -1) {
+          this[kClients].splice(idx, 1)
+        }
+      }
+    })
   }
 
   [kGetDispatcher] () {
@@ -33637,11 +33637,11 @@ const { parse } = __nccwpck_require__(1110)
         }
         core.info(`Parsed ref: \u001b[36m${ref}`)
 
-        // Process Inputs: inputs
-        core.startGroup('Inputs')
-        const inputs = parseInputs()
-        console.log('inputs:', inputs)
-        core.endGroup() // Inputs
+        // Process Config: config
+        core.startGroup('Config')
+        const config = getConfig()
+        console.log('config:', config)
+        core.endGroup() // Config
 
         // Set Variables: repo
         core.startGroup('Repository')
@@ -33654,25 +33654,30 @@ const { parse } = __nccwpck_require__(1110)
 
         // Process Tags: tags
         core.startGroup('Processing Tags')
-        const tags = parseTags(inputs, ref)
+        const tags = parseTags(config, ref)
         core.endGroup() // Repository
 
         // Process Labels: labels
         core.startGroup('Processing Labels')
-        const labels = parseLabels(inputs, ref, repo)
+        const labels = parseLabels(config, ref, repo)
         const annotations = labels.map((s) => `manifest:${s}`)
         core.endGroup() // Repository
 
         // Set Outputs
         core.info('📩 Setting Outputs')
-        core.setOutput('tags', tags.join(inputs.seperator))
-        core.setOutput('labels', labels.join(inputs.seperator))
-        core.setOutput('annotations', annotations.join(inputs.seperator))
+        core.setOutput('tags', tags.join(config.seperator))
+        core.setOutput('labels', labels.join(config.seperator))
+        core.setOutput('annotations', annotations.join(config.seperator))
 
-        // Write Summary
-        if (inputs.summary) {
+        // Summary
+        if (config.summary) {
             core.info('📝 Writing Job Summary')
-            await writeSummary(inputs, tags, labels, ref)
+            try {
+                await addSummary(config, tags, labels, ref)
+            } catch (e) {
+                console.log(e)
+                core.error(`Error writing Job Summary ${e.message}`)
+            }
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -33685,16 +33690,16 @@ const { parse } = __nccwpck_require__(1110)
 
 /**
  * @function parseTags
- * @param {Object} inputs
+ * @param {Config} config
  * @param {String} ref
  * @return {String[]}
  */
-function parseTags(inputs, ref) {
+function parseTags(config, ref) {
     const tags = []
     if (ref) {
         tags.push(ref)
     }
-    if (inputs.latest === 'default') {
+    if (config.latest === 'default') {
         if (
             github.context.eventName === 'release' &&
             !github.context.payload.release?.prerelease
@@ -33702,19 +33707,19 @@ function parseTags(inputs, ref) {
             console.log('\u001b[33;1mAdding latest tag on: release')
             tags.push('latest')
         }
-    } else if (inputs.latest === 'true') {
+    } else if (config.latest === 'true') {
         console.log('\u001b[33;1mAdding latest tag on: true')
         tags.push('latest')
     }
-    if (inputs.tags) {
-        console.log('inputs.tags:', inputs.tags)
-        tags.push(...inputs.tags)
+    if (config.tags) {
+        console.log('config.tags:', config.tags)
+        tags.push(...config.tags)
     }
     console.log('tags:', tags)
     const allTags = [...new Set(tags)]
     console.log('allTags:', allTags)
     const dockerTags = []
-    for (const image of inputs.images) {
+    for (const image of config.images) {
         for (const tag of allTags) {
             dockerTags.push(`${image}:${tag}`)
         }
@@ -33725,12 +33730,12 @@ function parseTags(inputs, ref) {
 
 /**
  * @function parseLabels
- * @param {Object} inputs
+ * @param {Config} config
  * @param {String} ref
  * @param {Object} repo
  * @return {String[]}
  */
-function parseLabels(inputs, ref, repo) {
+function parseLabels(config, ref, repo) {
     const defaultLabels = {
         'org.opencontainers.image.created': new Date().toISOString(),
         'org.opencontainers.image.revision': github.context.sha,
@@ -33747,9 +33752,9 @@ function parseLabels(inputs, ref, repo) {
             repo.license.spdx_id
     }
     // console.log('defaultLabels:', defaultLabels)
-    if (inputs.labels.length) {
-        console.log('inputs.labels:', inputs.labels)
-        for (const label of inputs.labels) {
+    if (config.labels.length) {
+        console.log('config.labels:', config.labels)
+        for (const label of config.labels) {
             if (!label.includes('=')) {
                 throw Error(`Label provided without an = symbol: ${label}`)
             }
@@ -33773,18 +33778,18 @@ function parseLabels(inputs, ref, repo) {
 }
 
 /**
- * @function writeSummary
- * @param {Object} inputs
+ * Add Job Summary
+ * @param {Config} config
  * @param {String[]} tags
  * @param {String[]} labels
  * @param {String} ref
  * @return {Promise<void>}
  */
-async function writeSummary(inputs, tags, labels, ref) {
+async function addSummary(config, tags, labels, ref) {
     core.summary.addRaw('## Docker Tags Action\n')
     core.summary.addRaw(
         `Generated **${tags.length}** Tags and **${labels.length}** Labels for ` +
-            `**${inputs.images.length}** Images. Parsed ref: \`${ref}\`\n\n`
+            `**${config.images.length}** Images. Parsed ref: \`${ref}\`\n\n`
     )
 
     core.summary.addRaw('<details><summary>Docker Tags</summary>\n\n')
@@ -33795,37 +33800,11 @@ async function writeSummary(inputs, tags, labels, ref) {
     core.summary.addCodeBlock(labels.join('\n'), 'text')
     core.summary.addRaw('\n</details>\n')
 
-    core.summary.addRaw('<details><summary>Inputs</summary>')
-    core.summary.addTable([
-        [
-            { data: 'Input', header: true },
-            { data: 'Value', header: true },
-        ],
-        [
-            { data: 'images' },
-            { data: `<code>${inputs.images.join(',')}</code>` },
-        ],
-        [
-            { data: 'tags' },
-            {
-                data: `<code>${inputs.tags.join(',')}</code>`,
-            },
-        ],
-        [
-            { data: 'labels' },
-            {
-                data: `<code>${inputs.labels.join(',')}</code>`,
-            },
-        ],
-        [
-            { data: 'seperator' },
-            {
-                data: `<code>${JSON.stringify(inputs.seperator)}</code>`,
-            },
-        ],
-        [{ data: 'latest' }, { data: `<code>${inputs.latest}</code>` }],
-        [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
-    ])
+    const yaml = Object.entries(config)
+        .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
+        .join('\n')
+    core.summary.addRaw('<details><summary>Config</summary>')
+    core.summary.addCodeBlock(yaml, 'yaml')
     core.summary.addRaw('</details>\n')
 
     const text = 'View Documentation, Report Issues or Request Features'
@@ -33835,35 +33814,33 @@ async function writeSummary(inputs, tags, labels, ref) {
 }
 
 /**
- * @function parseInputs
- * @return {{images: array, tags: array, labels: array, seperator: string, latest: string, summary: boolean}}
+ * Get Config
+ * @typedef {Object} Config
+ * @property {String[]} images
+ * @property {String[]} tags
+ * @property {String[]} labels
+ * @property {String} seperator
+ * @property {String} latest
+ * @property {Boolean} summary
+ * @return {Config}
  */
-function parseInputs() {
-    /** @type {String[]} */
-    const images = parse(core.getInput('images', { required: true }), {
-        delimiter: ',',
-        trim: true,
-        relax_column_count: true,
-    }).flat()
-    console.log('images:', images)
-    /** @type {String[]} */
-    const tags = parse(core.getInput('tags'), {
-        delimiter: ',',
-        trim: true,
-        relax_column_count: true,
-    }).flat()
-    console.log('tags:', tags)
-    /** @type {String[]} */
-    const labels = parse(core.getInput('labels'), {
-        delimiter: ',',
-        trim: true,
-        relax_column_count: true,
-    }).flat()
-    console.log('labels:', labels)
+function getConfig() {
     return {
-        images: images,
-        tags: tags,
-        labels: labels,
+        images: parse(core.getInput('images', { required: true }), {
+            delimiter: ',',
+            trim: true,
+            relax_column_count: true,
+        }).flat(),
+        tags: parse(core.getInput('tags'), {
+            delimiter: ',',
+            trim: true,
+            relax_column_count: true,
+        }).flat(),
+        labels: parse(core.getInput('labels'), {
+            delimiter: ',',
+            trim: true,
+            relax_column_count: true,
+        }).flat(),
         seperator:
             core.getInput('seperator', { trimWhitespace: false }) || `\n`,
         latest: core.getInput('latest'),
