@@ -35,7 +35,7 @@ Running locally is harder to set up, but it is much easier to test; and by far r
 
 ### GitHub
 
-When you push your branch to your repository, the [test.yaml](.github/workflows/test.yaml) should run...
+When you push your branch and create a PR, then the [test.yaml](.github/workflows/test.yaml) should run...
 
 ### Locally
 

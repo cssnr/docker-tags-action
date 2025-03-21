@@ -1,3 +1,7 @@
+[![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/docker-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/docker-tags-action/tags)
+[![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/docker-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/docker-tags-action/tags)
+[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/docker-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/docker-tags-action/releases/latest)
+[![GitHub Dist Size](https://img.shields.io/github/size/cssnr/docker-tags-action/dist%2Findex.js?label=dist%20size)](https://github.com/cssnr/docker-tags-action/blob/master/src/index.js)
 [![Release](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/docker-tags-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml)
 [![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/lint.yaml?logo=github&logoColor=white&label=lint)](https://github.com/cssnr/docker-tags-action/actions/workflows/lint.yaml)
@@ -12,10 +16,11 @@
 # Docker Tags Action
 
 - [Inputs](#Inputs)
-  - [Tags](#tags)
-  - [Labels](#labels)
+  - [Tags](#docker-tags)
+  - [Labels](#docker-labels)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
+- [Tags](#Tags)
 - [Support](#Support)
 - [Contributing](#Contributing)
 
@@ -32,8 +37,8 @@ For a more detailed implementation see: https://github.com/docker/metadata-actio
 | input     | required | default                            | description                                 |
 | --------- | :------: | ---------------------------------- | ------------------------------------------- |
 | images    |    -     | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline   |
-| tags      |    -     | _[see tags](#tags)_                | Extra Tags to Generate, CSV or Newline      |
-| labels    |    -     | _[see labels](#labels)_            | Extra Labels to Generate, CSV or Newline    |
+| tags      |    -     | _[see tags](#docker-tags)_         | Extra Tags to Generate, CSV or Newline      |
+| labels    |    -     | _[see labels](#docker-labels)_     | Extra Labels to Generate, CSV or Newline    |
 | seperator |    -     | `\n`                               | Output Seperator                            |
 | latest    |    -     | `default`                          | Latest Tag: [`true`, `false`, `default`] \* |
 | summary   |    -     | `true`                             | Add Summary to Job \*                       |
@@ -86,7 +91,7 @@ org.opencontainers.image.authors=smashedr</code></pre>
 To see a workflow run you can view a recent
 [test.yaml run](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml) _(requires login)_.
 
-### tags
+### docker tags
 
 | Event             | Ref                 | Tags     |
 | ----------------- | ------------------- | -------- |
@@ -98,7 +103,7 @@ This is the default tag added which is also set as the version for the label.
 
 Coming Soon: Add an option called `default` to disable or override the default tag.
 
-### labels
+### docker labels
 
 ```shell
 org.opencontainers.image.description=Example Repository Description
@@ -218,6 +223,21 @@ jobs:
 ```
 
 To see this used in a release workflow, see: https://github.com/cssnr/cloudflare-purge-cache-action/blob/master/.github/workflows/release.yaml
+
+## Tags
+
+The following rolling [tags](https://github.com/cssnr/docker-tags-action/tags) are maintained.
+
+| Version&nbsp;Tag                                                                                                                                                                                                     | Rolling | Bugs | Feat. |   Name    |  Target  | Example  |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----: | :--: | :---: | :-------: | :------: | :------- |
+| [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/docker-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20&color=44cc10)](https://github.com/cssnr/docker-tags-action/releases/latest) |   ✅    |  ✅  |  ✅   | **Major** | `vN.x.x` | `vN`     |
+| [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/docker-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20&color=blue)](https://github.com/cssnr/docker-tags-action/releases/latest) |   ✅    |  ✅  |  ❌   | **Minor** | `vN.N.x` | `vN.N`   |
+| [![GitHub Release](https://img.shields.io/github/v/release/cssnr/docker-tags-action?style=for-the-badge&label=%20&color=red)](https://github.com/cssnr/docker-tags-action/releases/latest)                           |   ❌    |  ❌  |  ❌   | **Micro** | `vN.N.N` | `vN.N.N` |
+
+You can view the release notes for each version on the [releases](https://github.com/cssnr/docker-tags-action/releases) page.
+
+The **Major** tag is recommended. It is the most up-to-date and always backwards compatible.
+Breaking changes would result in a **Major** version bump. At a minimum you should use a **Minor** tag.
 
 # Support
 
