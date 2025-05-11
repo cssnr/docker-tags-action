@@ -219,17 +219,23 @@ function getConfig() {
             delimiter: ',',
             trim: true,
             relax_column_count: true,
-        }).flat(),
+        })
+            .flat()
+            .filter(Boolean),
         tags: parse(core.getInput('tags'), {
             delimiter: ',',
             trim: true,
             relax_column_count: true,
-        }).flat(),
+        })
+            .flat()
+            .filter(Boolean),
         labels: parse(core.getInput('labels'), {
             delimiter: ',',
             trim: true,
             relax_column_count: true,
-        }).flat(),
+        })
+            .flat()
+            .filter(Boolean),
         seperator:
             core.getInput('seperator', { trimWhitespace: false }) || `\n`,
         latest: core.getInput('latest'),
