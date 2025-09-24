@@ -1,17 +1,21 @@
 [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/docker-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/docker-tags-action/tags)
-[![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/docker-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/docker-tags-action/tags)
+[![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/docker-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/docker-tags-action/releases)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/docker-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/docker-tags-action/releases/latest)
-[![GitHub Dist Size](https://img.shields.io/github/size/cssnr/docker-tags-action/dist%2Findex.js?label=dist%20size)](https://github.com/cssnr/docker-tags-action/blob/master/src/index.js)
-[![Release](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/docker-tags-action/actions/workflows/release.yaml)
-[![Test](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml)
-[![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/lint.yaml?logo=github&logoColor=white&label=lint)](https://github.com/cssnr/docker-tags-action/actions/workflows/lint.yaml)
+[![GitHub Dist Size](https://img.shields.io/github/size/cssnr/docker-tags-action/dist%2Findex.js?logo=bookstack&logoColor=white&label=dist%20size)](https://github.com/cssnr/docker-tags-action/blob/master/src/index.js)
+[![Workflow Release](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/release.yaml?logo=cachet&label=release)](https://github.com/cssnr/docker-tags-action/actions/workflows/release.yaml)
+[![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/test.yaml?logo=cachet&label=test)](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml)
+[![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/docker-tags-action/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_docker-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_docker-tags-action)
-[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/docker-tags-action?logo=github)](https://github.com/cssnr/docker-tags-action/releases/latest)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/docker-tags-action?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/docker-tags-action/graphs/commit-activity)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/docker-tags-action?logo=github&label=updated)](https://github.com/cssnr/docker-tags-action/pulse)
 [![Codeberg Last Commit](https://img.shields.io/gitea/last-commit/cssnr/docker-tags-action/master?gitea_url=https%3A%2F%2Fcodeberg.org%2F&logo=codeberg&logoColor=white&label=updated)](https://codeberg.org/cssnr/docker-tags-action)
-[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/docker-tags-action?logo=htmx&logoColor=white)](https://github.com/cssnr/docker-tags-action)
-[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white)](https://cssnr.github.io/)
+[![GitHub Contributors](https://img.shields.io/github/contributors/cssnr/docker-tags-action?logo=github)](https://github.com/cssnr/docker-tags-action/graphs/contributors)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/docker-tags-action?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
+[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/docker-tags-action?logo=htmx)](https://github.com/cssnr/docker-tags-action)
+[![GitHub Forks](https://img.shields.io/github/forks/cssnr/docker-tags-action?style=flat&logo=github)](https://github.com/cssnr/docker-tags-action/forks)
+[![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/docker-tags-action?style=flat&logo=github)](https://github.com/cssnr/docker-tags-action/stargazers)
+[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&label=org%20stars)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-72a5f2?logo=kofi&label=support)](https://ko-fi.com/cssnr)
 
 # Docker Tags Action
 
@@ -34,14 +38,14 @@ For a more detailed implementation see: https://github.com/docker/metadata-actio
 
 ## Inputs
 
-| Input     | Req. | Default&nbsp;Value                 | Input&nbsp;Description                      |
-| :-------- | :--: | :--------------------------------- | :------------------------------------------ |
-| images    |  -   | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline   |
-| tags      |  -   | _[see tags](#docker-tags)_         | Extra Tags to Generate, CSV or Newline      |
-| labels    |  -   | _[see labels](#docker-labels)_     | Extra Labels to Generate, CSV or Newline    |
-| seperator |  -   | `\n`                               | Output Seperator                            |
-| latest    |  -   | `default`                          | Latest Tag: [`true`, `false`, `default`] \* |
-| summary   |  -   | `true`                             | Add Summary to Job \*                       |
+|   Input   | Default&nbsp;Value                 | Input&nbsp;Description                      |
+| :-------: | :--------------------------------- | :------------------------------------------ |
+|  images   | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline   |
+|   tags    | _[see tags](#docker-tags)_         | Extra Tags to Generate, CSV or Newline      |
+|  labels   | _[see labels](#docker-labels)_     | Extra Labels to Generate, CSV or Newline    |
+| seperator | `\n`                               | Output Seperator                            |
+|  latest   | `default`                          | Latest Tag: [`true`, `false`, `default`] \* |
+|  summary  | `true`                             | Add Summary to Job \*                       |
 
 This works with no inputs, but you can customize the resulting tags and labels with inputs.
 
@@ -223,6 +227,9 @@ jobs:
 
 To see this used in a release workflow, see: https://github.com/cssnr/cloudflare-purge-cache-action/blob/master/.github/workflows/release.yaml
 
+For more examples, you can check out other projects using this action:  
+https://github.com/cssnr/docker-tags-action/network/dependents
+
 ## Tags
 
 The following rolling [tags](https://github.com/cssnr/docker-tags-action/tags) are maintained.
@@ -255,9 +262,12 @@ For more information, see the CSSNR [SUPPORT.md](https://github.com/cssnr/.githu
 
 # Contributing
 
-Currently, the best way to contribute to this project is to star this project on GitHub.
+Please consider making a donation to support the development of this project
+and [additional](https://cssnr.com/) open source projects.
 
-If you would like to submit a PR, please review the [CONTRIBUTING.md](CONTRIBUTING.md).
+[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/cssnr)
+
+If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
 
 Additionally, you can support other GitHub Actions I have published:
 
@@ -273,5 +283,8 @@ Additionally, you can support other GitHub Actions I have published:
 - [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 - [Package Changelog Action](https://github.com/cssnr/package-changelog-action?tab=readme-ov-file#readme)
 - [NPM Outdated Check Action](https://github.com/cssnr/npm-outdated-action?tab=readme-ov-file#readme)
+- [Label Creator Action](https://github.com/cssnr/label-creator-action?tab=readme-ov-file#readme)
+- [Algolia Crawler Action](https://github.com/cssnr/algolia-crawler-action?tab=readme-ov-file#readme)
+- [Upload Release Action](https://github.com/cssnr/upload-release-action?tab=readme-ov-file#readme)
 
-For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
+For a full list of current projects visit: [https://cssnr.github.io/](https://cssnr.github.io/)

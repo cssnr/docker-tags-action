@@ -26,11 +26,11 @@ const { parse } = require('csv-parse/sync')
         }
         core.info(`Parsed ref: \u001b[36m${ref}`)
 
-        // Process Config: config
-        core.startGroup('Config')
-        const config = getConfig()
-        console.log('config:', config)
-        core.endGroup() // Config
+        // Process Inputs: inputs
+        core.startGroup('Inputs')
+        const inputs = getInputs()
+        console.log('inputs:', inputs)
+        core.endGroup() // Inputs
 
         // Set Variables: repo
         core.startGroup('Repository')
@@ -43,26 +43,26 @@ const { parse } = require('csv-parse/sync')
 
         // Process Tags: tags
         core.startGroup('Processing Tags')
-        const tags = parseTags(config, ref)
+        const tags = parseTags(inputs, ref)
         core.endGroup() // Repository
 
         // Process Labels: labels
         core.startGroup('Processing Labels')
-        const labels = parseLabels(config, ref, repo)
+        const labels = parseLabels(inputs, ref, repo)
         const annotations = labels.map((s) => `manifest:${s}`)
         core.endGroup() // Repository
 
         // Set Outputs
         core.info('📩 Setting Outputs')
-        core.setOutput('tags', tags.join(config.seperator))
-        core.setOutput('labels', labels.join(config.seperator))
-        core.setOutput('annotations', annotations.join(config.seperator))
+        core.setOutput('tags', tags.join(inputs.seperator))
+        core.setOutput('labels', labels.join(inputs.seperator))
+        core.setOutput('annotations', annotations.join(inputs.seperator))
 
         // Summary
-        if (config.summary) {
+        if (inputs.summary) {
             core.info('📝 Writing Job Summary')
             try {
-                await addSummary(config, tags, labels, ref)
+                await addSummary(inputs, tags, labels, ref)
             } catch (e) {
                 console.log(e)
                 core.error(`Error writing Job Summary ${e.message}`)
@@ -79,16 +79,16 @@ const { parse } = require('csv-parse/sync')
 
 /**
  * @function parseTags
- * @param {Config} config
+ * @param {Inputs} inputs
  * @param {String} ref
  * @return {String[]}
  */
-function parseTags(config, ref) {
+function parseTags(inputs, ref) {
     const tags = []
     if (ref) {
         tags.push(ref)
     }
-    if (config.latest === 'default') {
+    if (inputs.latest === 'default') {
         if (
             github.context.eventName === 'release' &&
             !github.context.payload.release?.prerelease
@@ -96,19 +96,19 @@ function parseTags(config, ref) {
             console.log('\u001b[33;1mAdding latest tag on: release')
             tags.push('latest')
         }
-    } else if (config.latest === 'true') {
+    } else if (inputs.latest === 'true') {
         console.log('\u001b[33;1mAdding latest tag on: true')
         tags.push('latest')
     }
-    if (config.tags) {
-        console.log('config.tags:', config.tags)
-        tags.push(...config.tags)
+    if (inputs.tags) {
+        console.log('inputs.tags:', inputs.tags)
+        tags.push(...inputs.tags)
     }
     console.log('tags:', tags)
     const allTags = [...new Set(tags)]
     console.log('allTags:', allTags)
     const dockerTags = []
-    for (const image of config.images) {
+    for (const image of inputs.images) {
         for (const tag of allTags) {
             dockerTags.push(`${image}:${tag}`)
         }
@@ -119,12 +119,12 @@ function parseTags(config, ref) {
 
 /**
  * @function parseLabels
- * @param {Config} config
+ * @param {Inputs} inputs
  * @param {String} ref
  * @param {Object} repo
  * @return {String[]}
  */
-function parseLabels(config, ref, repo) {
+function parseLabels(inputs, ref, repo) {
     const defaultLabels = {
         'org.opencontainers.image.created': new Date().toISOString(),
         'org.opencontainers.image.revision': github.context.sha,
@@ -137,15 +137,14 @@ function parseLabels(config, ref, repo) {
         defaultLabels['org.opencontainers.image.description'] = repo.description
     }
     if (repo.license?.spdx_id) {
-        defaultLabels['org.opencontainers.image.licenses'] =
-            repo.license.spdx_id
+        defaultLabels['org.opencontainers.image.licenses'] = repo.license.spdx_id
     }
     // console.log('defaultLabels:', defaultLabels)
-    if (config.labels.length) {
-        console.log('config.labels:', config.labels)
-        for (const label of config.labels) {
+    if (inputs.labels.length) {
+        console.log('inputs.labels:', inputs.labels)
+        for (const label of inputs.labels) {
             if (!label.includes('=')) {
-                throw Error(`Label provided without an = symbol: ${label}`)
+                throw new Error(`Label provided without an = symbol: ${label}`)
             }
             const [key, value] = label.split(/=(.*)/s).slice(0, 2)
             if (value) {
@@ -168,17 +167,17 @@ function parseLabels(config, ref, repo) {
 
 /**
  * Add Job Summary
- * @param {Config} config
+ * @param {Inputs} inputs
  * @param {String[]} tags
  * @param {String[]} labels
  * @param {String} ref
  * @return {Promise<void>}
  */
-async function addSummary(config, tags, labels, ref) {
+async function addSummary(inputs, tags, labels, ref) {
     core.summary.addRaw('## Docker Tags Action\n')
     core.summary.addRaw(
         `Generated **${tags.length}** Tags and **${labels.length}** Labels for ` +
-            `**${config.images.length}** Images. Parsed ref: \`${ref}\`\n\n`
+            `**${inputs.images.length}** Images. Parsed ref: \`${ref}\`\n\n`
     )
 
     core.summary.addRaw('<details><summary>Docker Tags</summary>\n\n')
@@ -189,10 +188,10 @@ async function addSummary(config, tags, labels, ref) {
     core.summary.addCodeBlock(labels.join('\n'), 'text')
     core.summary.addRaw('\n</details>\n')
 
-    const yaml = Object.entries(config)
+    const yaml = Object.entries(inputs)
         .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
         .join('\n')
-    core.summary.addRaw('<details><summary>Config</summary>')
+    core.summary.addRaw('<details><summary>Inputs</summary>')
     core.summary.addCodeBlock(yaml, 'yaml')
     core.summary.addRaw('</details>\n')
 
@@ -203,17 +202,17 @@ async function addSummary(config, tags, labels, ref) {
 }
 
 /**
- * Get Config
- * @typedef {Object} Config
+ * Get Inputs
+ * @typedef {Object} Inputs
  * @property {String[]} images
  * @property {String[]} tags
  * @property {String[]} labels
  * @property {String} seperator
  * @property {String} latest
  * @property {Boolean} summary
- * @return {Config}
+ * @return {Inputs}
  */
-function getConfig() {
+function getInputs() {
     return {
         images: parse(core.getInput('images', { required: true }), {
             delimiter: ',',
@@ -236,8 +235,7 @@ function getConfig() {
         })
             .flat()
             .filter(Boolean),
-        seperator:
-            core.getInput('seperator', { trimWhitespace: false }) || `\n`,
+        seperator: core.getInput('seperator', { trimWhitespace: false }) || `\n`,
         latest: core.getInput('latest'),
         summary: core.getBooleanInput('summary'),
     }
