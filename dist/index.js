@@ -33774,7 +33774,7 @@ function parseLabels(inputs, ref, repo) {
         console.log('inputs.labels:', inputs.labels)
         for (const label of inputs.labels) {
             if (!label.includes('=')) {
-                throw Error(`Label provided without an = symbol: ${label}`)
+                throw new Error(`Label provided without an = symbol: ${label}`)
             }
             const [key, value] = label.split(/=(.*)/s).slice(0, 2)
             if (value) {
