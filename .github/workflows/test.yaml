@@ -17,6 +17,7 @@ jobs:
     name: "Test"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+
     permissions:
       contents: write
 
@@ -24,9 +25,12 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v5
 
-      #- name: "Debug event.json"
-      #  run: |
-      #    cat "${GITHUB_EVENT_PATH}"
+      #- name: "Debug CTX github"
+      #  if: ${{ !github.event.act }}
+      #  continue-on-error: true
+      #  env:
+      #    GITHUB_CTX: ${{ toJSON(github) }}
+      #  run: echo "$GITHUB_CTX"
 
       - name: "Test Local Action"
         id: test

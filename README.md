@@ -8,9 +8,10 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_docker-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_docker-tags-action)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/docker-tags-action?logo=github&label=updated)](https://github.com/cssnr/docker-tags-action/pulse)
 [![Codeberg Last Commit](https://img.shields.io/gitea/last-commit/cssnr/docker-tags-action/master?gitea_url=https%3A%2F%2Fcodeberg.org%2F&logo=codeberg&logoColor=white&label=updated)](https://codeberg.org/cssnr/docker-tags-action)
-[![GitHub Contributors](https://img.shields.io/github/contributors/cssnr/docker-tags-action?logo=github)](https://github.com/cssnr/docker-tags-action/graphs/contributors)
+[![GitHub Contributors](https://img.shields.io/github/contributors-anon/cssnr/docker-tags-action?logo=github)](https://github.com/cssnr/docker-tags-action/graphs/contributors)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/docker-tags-action?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/docker-tags-action?logo=htmx)](https://github.com/cssnr/docker-tags-action)
+[![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/docker-tags-action?logo=github)](https://github.com/cssnr/docker-tags-action/discussions)
 [![GitHub Forks](https://img.shields.io/github/forks/cssnr/docker-tags-action?style=flat&logo=github)](https://github.com/cssnr/docker-tags-action/forks)
 [![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/docker-tags-action?style=flat&logo=github)](https://github.com/cssnr/docker-tags-action/stargazers)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&label=org%20stars)](https://cssnr.github.io/)
@@ -38,14 +39,14 @@ For a more detailed implementation see: https://github.com/docker/metadata-actio
 
 ## Inputs
 
-|   Input   | Default&nbsp;Value                 | Input&nbsp;Description                      |
-| :-------: | :--------------------------------- | :------------------------------------------ |
-|  images   | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline   |
-|   tags    | _[see tags](#docker-tags)_         | Extra Tags to Generate, CSV or Newline      |
-|  labels   | _[see labels](#docker-labels)_     | Extra Labels to Generate, CSV or Newline    |
-| seperator | `\n`                               | Output Seperator                            |
-|  latest   | `default`                          | Latest Tag: [`true`, `false`, `default`] \* |
-|  summary  | `true`                             | Add Summary to Job \*                       |
+| Input                    | Default&nbsp;Value                 | Description&nbsp;of&nbsp;the&nbsp;Input&nbsp;Value |
+| :----------------------- | :--------------------------------- | :------------------------------------------------- |
+| images                   | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline          |
+| [tags](#docker-tags)     | _[see tags](#docker-tags)_         | Extra Tags to Generate, CSV or Newline             |
+| [labels](#docker-labels) | _[see labels](#docker-labels)_     | Extra Labels to Generate, CSV or Newline           |
+| [seperator](#seperator)  | `\n`                               | Output Seperator                                   |
+| [latest](#latest)        | `default`                          | Latest Tag: [`true`, `false`, `default`]           |
+| [summary](#summary)      | `true`                             | Add Summary to Job                                 |
 
 This works with no inputs, but you can customize the resulting tags and labels with inputs.
 
@@ -55,11 +56,17 @@ This works with no inputs, but you can customize the resulting tags and labels w
   uses: cssnr/docker-tags-action@v1
 ```
 
-**seperator** - Output seperator. Newline is default and that works as the input for the docker build actions.
+### seperator
 
-**latest** - Default behavior only adds `latest` tag to a release that are not a pre-release.
+Output seperator. Newline is default and that works as the input for the docker build actions.
 
-**summary** - Write a Summary for the job. To disable this set to `false`.
+### latest
+
+Default behavior only adds `latest` tag to a release that are not a pre-release.
+
+### summary
+
+Write a Summary for the job. To disable this set to `false`.
 
 <details><summary>👀 View Example Summary</summary>
 
@@ -272,19 +279,53 @@ If you would like to submit a PR, please review the [CONTRIBUTING.md](#contribut
 Additionally, you can support other GitHub Actions I have published:
 
 - [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action?tab=readme-ov-file#readme)
-- [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action?tab=readme-ov-file#readme)
+- [Portainer Stack Deploy Action](https://github.com/cssnr/portainer-stack-deploy-action?tab=readme-ov-file#readme)
+- [Docker Context Action](https://github.com/cssnr/docker-context-action?tab=readme-ov-file#readme)
 - [VirusTotal Action](https://github.com/cssnr/virustotal-action?tab=readme-ov-file#readme)
 - [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action?tab=readme-ov-file#readme)
 - [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action?tab=readme-ov-file#readme)
+- [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 - [Update JSON Value Action](https://github.com/cssnr/update-json-value-action?tab=readme-ov-file#readme)
+- [JSON Key Value Check Action](https://github.com/cssnr/json-key-value-check-action?tab=readme-ov-file#readme)
 - [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action?tab=readme-ov-file#readme)
 - [Cloudflare Purge Cache Action](https://github.com/cssnr/cloudflare-purge-cache-action?tab=readme-ov-file#readme)
 - [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action?tab=readme-ov-file#readme)
-- [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 - [Package Changelog Action](https://github.com/cssnr/package-changelog-action?tab=readme-ov-file#readme)
 - [NPM Outdated Check Action](https://github.com/cssnr/npm-outdated-action?tab=readme-ov-file#readme)
 - [Label Creator Action](https://github.com/cssnr/label-creator-action?tab=readme-ov-file#readme)
 - [Algolia Crawler Action](https://github.com/cssnr/algolia-crawler-action?tab=readme-ov-file#readme)
 - [Upload Release Action](https://github.com/cssnr/upload-release-action?tab=readme-ov-file#readme)
+- [Check Build Action](https://github.com/cssnr/check-build-action?tab=readme-ov-file#readme)
+- [Web Request Action](https://github.com/cssnr/web-request-action?tab=readme-ov-file#readme)
+- [Get Commit Action](https://github.com/cssnr/get-commit-action?tab=readme-ov-file#readme)
+
+<details><summary>❔ Unpublished Actions</summary>
+
+These actions are not published on the Marketplace, but may be useful.
+
+- [cssnr/draft-release-action](https://github.com/cssnr/draft-release-action?tab=readme-ov-file#readme) - Keep a draft release ready to publish.
+- [cssnr/env-json-action](https://github.com/cssnr/env-json-action?tab=readme-ov-file#readme) - Convert env file to json or vice versa.
+- [cssnr/push-artifacts-action](https://github.com/cssnr/push-artifacts-action?tab=readme-ov-file#readme) - Sync files to a remote host with rsync.
+- [smashedr/update-release-notes-action](https://github.com/smashedr/update-release-notes-action?tab=readme-ov-file#readme) - Update release notes.
+- [smashedr/combine-release-notes-action](https://github.com/smashedr/combine-release-notes-action?tab=readme-ov-file#readme) - Combine release notes.
+
+---
+
+</details>
+
+<details><summary>📝 Template Actions</summary>
+
+These are basic action templates that I use for creating new actions.
+
+- [js-test-action](https://github.com/smashedr/js-test-action?tab=readme-ov-file#readme) - JavaScript
+- [py-test-action](https://github.com/smashedr/py-test-action?tab=readme-ov-file#readme) - Python
+- [ts-test-action](https://github.com/smashedr/ts-test-action?tab=readme-ov-file#readme) - TypeScript
+- [docker-test-action](https://github.com/smashedr/docker-test-action?tab=readme-ov-file#readme) - Docker Image
+
+Note: The `docker-test-action` builds, runs and pushes images to [GitHub Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+
+---
+
+</details>
 
 For a full list of current projects visit: [https://cssnr.github.io/](https://cssnr.github.io/)
