@@ -54,7 +54,7 @@ This works with no inputs, but you can customize the resulting tags and labels w
 ```yaml
 - name: 'Docker Tags'
   id: tags
-  uses: cssnr/docker-tags-action@v1
+  uses: cssnr/docker-tags-action@v2
 ```
 
 ### seperator
@@ -151,7 +151,7 @@ All outputs are seperated by the inputs `seperator` which defaults to a newline.
 ```yaml
 - name: 'Docker Tags'
   id: tags
-  uses: cssnr/docker-tags-action@v1
+  uses: cssnr/docker-tags-action@v2
 
 - name: 'Echo Result'
   run: |
@@ -167,7 +167,7 @@ With all inputs:
 ```yaml
 - name: 'Docker Tags'
   id: tags
-  uses: cssnr/docker-tags-action@v1
+  uses: cssnr/docker-tags-action@v2
   with:
     images: 'ghcr.io/${{ github.repository }}'
     tags: v1,v1.0
@@ -201,7 +201,7 @@ jobs:
 
       - name: 'Docker Tags'
         id: tags
-        uses: cssnr/docker-tags-action@v1
+        uses: cssnr/docker-tags-action@v2
         with:
           images: 'ghcr.io/${{ github.repository }}'
           tags: ${{ github.ref_name }}
