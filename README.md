@@ -2,6 +2,7 @@
 [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/docker-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/docker-tags-action/releases)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/docker-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/docker-tags-action/releases/latest)
 [![GitHub Dist Size](https://img.shields.io/github/size/cssnr/docker-tags-action/dist%2Findex.js?logo=bookstack&logoColor=white&label=dist%20size)](https://github.com/cssnr/docker-tags-action/blob/master/src/index.js)
+[![Action Run Using](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fcssnr%2Fdocker-tags-action%2Frefs%2Fheads%2Fmaster%2Faction.yml&query=%24.runs.using&logo=githubactions&logoColor=white&label=runs)](https://github.com/cssnr/docker-tags-action/blob/master/action.yml)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/release.yaml?logo=cachet&label=release)](https://github.com/cssnr/docker-tags-action/actions/workflows/release.yaml)
 [![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/test.yaml?logo=cachet&label=test)](https://github.com/cssnr/docker-tags-action/actions/workflows/test.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/docker-tags-action/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/docker-tags-action/actions/workflows/lint.yaml)
@@ -53,7 +54,7 @@ This works with no inputs, but you can customize the resulting tags and labels w
 ```yaml
 - name: 'Docker Tags'
   id: tags
-  uses: cssnr/docker-tags-action@v1
+  uses: cssnr/docker-tags-action@v2
 ```
 
 ### seperator
@@ -150,7 +151,7 @@ All outputs are seperated by the inputs `seperator` which defaults to a newline.
 ```yaml
 - name: 'Docker Tags'
   id: tags
-  uses: cssnr/docker-tags-action@v1
+  uses: cssnr/docker-tags-action@v2
 
 - name: 'Echo Result'
   run: |
@@ -166,7 +167,7 @@ With all inputs:
 ```yaml
 - name: 'Docker Tags'
   id: tags
-  uses: cssnr/docker-tags-action@v1
+  uses: cssnr/docker-tags-action@v2
   with:
     images: 'ghcr.io/${{ github.repository }}'
     tags: v1,v1.0
@@ -200,7 +201,7 @@ jobs:
 
       - name: 'Docker Tags'
         id: tags
-        uses: cssnr/docker-tags-action@v1
+        uses: cssnr/docker-tags-action@v2
         with:
           images: 'ghcr.io/${{ github.repository }}'
           tags: ${{ github.ref_name }}
@@ -269,18 +270,19 @@ For more information, see the CSSNR [SUPPORT.md](https://github.com/cssnr/.githu
 
 # Contributing
 
+If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
+
 Please consider making a donation to support the development of this project
 and [additional](https://cssnr.com/) open source projects.
 
 [![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/cssnr)
-
-If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
 
 Additionally, you can support other GitHub Actions I have published:
 
 - [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action?tab=readme-ov-file#readme)
 - [Portainer Stack Deploy Action](https://github.com/cssnr/portainer-stack-deploy-action?tab=readme-ov-file#readme)
 - [Docker Context Action](https://github.com/cssnr/docker-context-action?tab=readme-ov-file#readme)
+- [Actions Up Action](https://github.com/cssnr/actions-up-action?tab=readme-ov-file#readme)
 - [VirusTotal Action](https://github.com/cssnr/virustotal-action?tab=readme-ov-file#readme)
 - [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action?tab=readme-ov-file#readme)
 - [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action?tab=readme-ov-file#readme)
@@ -303,6 +305,7 @@ Additionally, you can support other GitHub Actions I have published:
 
 These actions are not published on the Marketplace, but may be useful.
 
+- [cssnr/create-files-action](https://github.com/cssnr/create-files-action?tab=readme-ov-file#readme) - Create various files from templates.
 - [cssnr/draft-release-action](https://github.com/cssnr/draft-release-action?tab=readme-ov-file#readme) - Keep a draft release ready to publish.
 - [cssnr/env-json-action](https://github.com/cssnr/env-json-action?tab=readme-ov-file#readme) - Convert env file to json or vice versa.
 - [cssnr/push-artifacts-action](https://github.com/cssnr/push-artifacts-action?tab=readme-ov-file#readme) - Sync files to a remote host with rsync.
@@ -318,9 +321,9 @@ These actions are not published on the Marketplace, but may be useful.
 These are basic action templates that I use for creating new actions.
 
 - [js-test-action](https://github.com/smashedr/js-test-action?tab=readme-ov-file#readme) - JavaScript
-- [py-test-action](https://github.com/smashedr/py-test-action?tab=readme-ov-file#readme) - Python
 - [ts-test-action](https://github.com/smashedr/ts-test-action?tab=readme-ov-file#readme) - TypeScript
-- [docker-test-action](https://github.com/smashedr/docker-test-action?tab=readme-ov-file#readme) - Docker Image
+- [py-test-action](https://github.com/smashedr/py-test-action?tab=readme-ov-file#readme) - Python (Dockerfile)
+- [docker-test-action](https://github.com/smashedr/docker-test-action?tab=readme-ov-file#readme) - Docker (Image)
 
 Note: The `docker-test-action` builds, runs and pushes images to [GitHub Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 

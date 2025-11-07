@@ -33632,86 +33632,80 @@ const core = __nccwpck_require__(7484)
 const github = __nccwpck_require__(3228)
 const { parse } = __nccwpck_require__(1110)
 
-;(async () => {
-    try {
-        core.info('🏳️ Starting Docker Tags Action')
+async function main() {
+    core.info('🏳️ Starting Docker Tags Action')
 
-        // Debug
-        core.startGroup('Debug')
-        // console.log('process.env:', process.env)
-        // console.log('github.context:', github.context)
-        console.log('github.context.ref:', github.context.ref)
-        console.log('github.context.eventName:', github.context.eventName)
-        console.log('prerelease:', github.context.payload.release?.prerelease)
-        core.endGroup() // Debug
+    // Debug
+    core.startGroup('Debug')
+    // console.log('process.env:', process.env)
+    // console.log('github.context:', github.context)
+    console.log('github.context.ref:', github.context.ref)
+    console.log('github.context.eventName:', github.context.eventName)
+    console.log('prerelease:', github.context.payload.release?.prerelease)
+    core.endGroup() // Debug
 
-        // Parse Ref: ref
-        let ref = github.context.ref.split('/')[2]
-        if (github.context.ref.startsWith('refs/pull/')) {
-            core.info(`Pull Request: \u001b[36m${ref}`)
-            ref = `pr-${ref}`
-        }
-        if (!ref) {
-            return core.setFailed(`Unable to parse ref: ${github.context.ref}`)
-        }
-        core.info(`Parsed ref: \u001b[36m${ref}`)
-
-        // Process Inputs: inputs
-        core.startGroup('Inputs')
-        const inputs = getInputs()
-        console.log('inputs:', inputs)
-        core.endGroup() // Inputs
-
-        // Set Variables: repo
-        core.startGroup('Repository')
-        const repo = github.context.payload.repository
-        console.log('name:', repo.name)
-        console.log('description:', repo.description)
-        console.log('html_url:', repo.html_url)
-        console.log('spdx_id:', repo.license?.spdx_id)
-        core.endGroup() // Repository
-
-        // Process Tags: tags
-        core.startGroup('Processing Tags')
-        const tags = parseTags(inputs, ref)
-        core.endGroup() // Repository
-
-        // Process Labels: labels
-        core.startGroup('Processing Labels')
-        const labels = parseLabels(inputs, ref, repo)
-        const annotations = labels.map((s) => `manifest:${s}`)
-        core.endGroup() // Repository
-
-        // Set Outputs
-        core.info('📩 Setting Outputs')
-        core.setOutput('tags', tags.join(inputs.seperator))
-        core.setOutput('labels', labels.join(inputs.seperator))
-        core.setOutput('annotations', annotations.join(inputs.seperator))
-
-        // Summary
-        if (inputs.summary) {
-            core.info('📝 Writing Job Summary')
-            try {
-                await addSummary(inputs, tags, labels, ref)
-            } catch (e) {
-                console.log(e)
-                core.error(`Error writing Job Summary ${e.message}`)
-            }
-        }
-
-        core.info('✅ \u001b[32;1mFinished Success')
-    } catch (e) {
-        core.debug(e)
-        core.info(e.message)
-        core.setFailed(e.message)
+    // Parse Ref: ref
+    let ref = github.context.ref.split('/')[2]
+    if (github.context.ref.startsWith('refs/pull/')) {
+        core.info(`Pull Request: \u001b[36m${ref}`)
+        ref = `pr-${ref}`
     }
-})()
+    if (!ref) {
+        return core.setFailed(`Unable to parse ref: ${github.context.ref}`)
+    }
+    core.info(`Parsed ref: \u001b[36m${ref}`)
+
+    // Process Inputs: inputs
+    core.startGroup('Inputs')
+    const inputs = getInputs()
+    console.log('inputs:', inputs)
+    core.endGroup() // Inputs
+
+    // Set Variables: repo
+    core.startGroup('Repository')
+    const repo = github.context.payload.repository
+    console.log('name:', repo.name)
+    console.log('description:', repo.description)
+    console.log('html_url:', repo.html_url)
+    console.log('spdx_id:', repo.license?.spdx_id)
+    core.endGroup() // Repository
+
+    // Process Tags: tags
+    core.startGroup('Processing Tags')
+    const tags = parseTags(inputs, ref)
+    core.endGroup() // Repository
+
+    // Process Labels: labels
+    core.startGroup('Processing Labels')
+    const labels = parseLabels(inputs, ref, repo)
+    const annotations = labels.map((s) => `manifest:${s}`)
+    core.endGroup() // Repository
+
+    // Set Outputs
+    core.info('📩 Setting Outputs')
+    core.setOutput('tags', tags.join(inputs.seperator))
+    core.setOutput('labels', labels.join(inputs.seperator))
+    core.setOutput('annotations', annotations.join(inputs.seperator))
+
+    // Summary
+    if (inputs.summary) {
+        core.info('📝 Writing Job Summary')
+        try {
+            await addSummary(inputs, tags, labels, ref)
+        } catch (e) {
+            console.log(e)
+            core.error(`Error writing Job Summary ${e.message}`)
+        }
+    }
+
+    core.info('✅ \u001b[32;1mFinished Success')
+}
 
 /**
  * @function parseTags
  * @param {Inputs} inputs
- * @param {String} ref
- * @return {String[]}
+ * @param {string} ref
+ * @return {string[]}
  */
 function parseTags(inputs, ref) {
     const tags = []
@@ -33750,9 +33744,9 @@ function parseTags(inputs, ref) {
 /**
  * @function parseLabels
  * @param {Inputs} inputs
- * @param {String} ref
- * @param {Object} repo
- * @return {String[]}
+ * @param {string} ref
+ * @param {object} repo
+ * @return {string[]}
  */
 function parseLabels(inputs, ref, repo) {
     const defaultLabels = {
@@ -33798,9 +33792,9 @@ function parseLabels(inputs, ref, repo) {
 /**
  * Add Job Summary
  * @param {Inputs} inputs
- * @param {String[]} tags
- * @param {String[]} labels
- * @param {String} ref
+ * @param {string[]} tags
+ * @param {string[]} labels
+ * @param {string} ref
  * @return {Promise<void>}
  */
 async function addSummary(inputs, tags, labels, ref) {
@@ -33833,13 +33827,13 @@ async function addSummary(inputs, tags, labels, ref) {
 
 /**
  * Get Inputs
- * @typedef {Object} Inputs
- * @property {String[]} images
- * @property {String[]} tags
- * @property {String[]} labels
- * @property {String} seperator
- * @property {String} latest
- * @property {Boolean} summary
+ * @typedef {object} Inputs
+ * @property {string[]} images
+ * @property {string[]} tags
+ * @property {string[]} labels
+ * @property {string} seperator
+ * @property {string} latest
+ * @property {boolean} summary
  * @return {Inputs}
  */
 function getInputs() {
@@ -33870,6 +33864,12 @@ function getInputs() {
         summary: core.getBooleanInput('summary'),
     }
 }
+
+main().catch((e) => {
+    core.debug(e)
+    core.info(e.message)
+    core.setFailed(e.message)
+})
 
 module.exports = __webpack_exports__;
 /******/ })()
