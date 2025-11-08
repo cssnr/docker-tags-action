@@ -1,5 +1,5 @@
 name: "Docker Tags"
-description: "Generate Docker Tags and Labels for building Docker images with GitHub Actions."
+description: "Generate Docker Tags, Labels and Annotations for building Docker images with GitHub Actions."
 author: "Shane"
 branding:
   icon: "tag"
