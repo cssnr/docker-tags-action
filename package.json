@@ -1,24 +1,32 @@
 {
   "name": "docker-tags-action",
   "private": true,
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npx ncc build src/index.js",
+    "build": "npx rollup --config rollup.config.mjs",
     "build:watch": "npm run build -- --watch",
-    "lint": "npx eslint src",
+    "lint": "npx eslint src --ext .ts",
     "lint:report": "npm run lint -- --output-file eslint_report.json --format json",
     "prettier:check": "npx prettier --check .",
     "prettier:write": "npx prettier --write ."
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.1",
-    "csv-parse": "^6.1.0"
+    "@actions/github": "^6.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@vercel/ncc": "^0.38.4",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@types/node": "^24.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.48.0",
+    "@typescript-eslint/parser": "^8.48.0",
     "eslint": "^9.39.1",
-    "prettier": "^3.6.2"
+    "prettier": "^3.7.1",
+    "rollup": "^4.53.3",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.3"
   }
 }

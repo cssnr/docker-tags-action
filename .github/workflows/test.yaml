@@ -28,16 +28,19 @@ jobs:
         uses: actions/checkout@v6
 
       - name: "Debug event.json"
+        if: ${{ !github.event.act }}
         continue-on-error: true
         run: cat "${GITHUB_EVENT_PATH}"
 
       - name: "Debug CTX github"
+        if: ${{ !github.event.act }}
         continue-on-error: true
         env:
           GITHUB_CTX: ${{ toJSON(github) }}
         run: echo "$GITHUB_CTX"
 
       - name: "Debug Environment"
+        if: ${{ !github.event.act }}
         continue-on-error: true
         run: env
 
@@ -45,28 +48,22 @@ jobs:
         id: test
         uses: ./
         with:
+          summary: ${{ !github.event.act }}
           latest: true
+
           labels: |
             org.opencontainers.image.licenses=
-            org.opencontainers.image.authors=smashedr
+            org.opencontainers.image.authors=ralf
 
-      - name: "Verify Outputs"
-        run: |
-          echo -e "tags:\n${{ steps.test.outputs.tags }}"
-          if [ -z '${{ steps.test.outputs.tags }}' ];then
-            echo "No Output: tags"
-            exit 1
-          fi
-          echo -e "labels:\n${{ steps.test.outputs.labels }}"
-          if [ -z '${{ steps.test.outputs.labels }}' ];then
-            echo "No Output: labels"
-            exit 1
-          fi
-          echo -e "annotations:\n${{ steps.test.outputs.annotations }}"
-          if [ -z '${{ steps.test.outputs.annotations }}' ];then
-            echo "No Output: annotations"
-            exit 1
-          fi
+      - name: "Validate Outputs"
+        #if: ${{ !github.event.act }}
+        uses: cssnr/validate-outputs-action@master
+        with:
+          outputs: ${{ toJSON(steps.test.outputs) }}
+          data: |
+            tags:
+            labels:
+            annotations:
 
       - name: "Schedule Failure Notification"
         if: ${{ failure() && github.event_name == 'schedule' }}

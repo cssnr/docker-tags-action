@@ -1,6 +1,24 @@
-const core = require('@actions/core')
-const github = require('@actions/github')
-const { parse } = require('csv-parse/sync')
+import * as core from '@actions/core'
+import * as github from '@actions/github'
+import { PayloadRepository } from '@actions/github/lib/interfaces.js'
+
+type Inputs = typeof inputs
+
+const inputs = {
+    images: splitTrim(core.getInput('images', { required: true })),
+    tags: splitTrim(core.getInput('tags')),
+    labels: splitTrim(core.getInput('labels')),
+    seperator: core.getInput('seperator', { trimWhitespace: false }),
+    latest: core.getInput('latest'),
+    summary: core.getBooleanInput('summary'),
+}
+
+function splitTrim(value: string): string[] {
+    return value
+        .split(/[\r\n,]+/)
+        .map((s) => s.trim())
+        .filter((s) => s !== '')
+}
 
 async function main() {
     core.info('🏳️ Starting Docker Tags Action')
@@ -9,49 +27,48 @@ async function main() {
     core.startGroup('Debug')
     // console.log('process.env:', process.env)
     // console.log('github.context:', github.context)
+    console.log('process.env.GITHUB_REF:', process.env.GITHUB_REF)
     console.log('github.context.ref:', github.context.ref)
     console.log('github.context.eventName:', github.context.eventName)
     console.log('prerelease:', github.context.payload.release?.prerelease)
     core.endGroup() // Debug
 
-    // Parse Ref: ref
+    // Parse ref
     let ref = github.context.ref.split('/')[2]
     if (github.context.ref.startsWith('refs/pull/')) {
         core.info(`Pull Request: \u001b[36m${ref}`)
         ref = `pr-${ref}`
     }
-    if (!ref) {
-        return core.setFailed(`Unable to parse ref: ${github.context.ref}`)
-    }
+    if (!ref) return core.setFailed(`Unable to parse ref: ${github.context.ref}`)
     core.info(`Parsed ref: \u001b[36m${ref}`)
 
-    // Process Inputs: inputs
+    // Inputs
     core.startGroup('Inputs')
-    const inputs = getInputs()
     console.log('inputs:', inputs)
     core.endGroup() // Inputs
 
-    // Set Variables: repo
+    // Repository
     core.startGroup('Repository')
-    const repo = github.context.payload.repository
+    const repo: PayloadRepository | undefined = github.context.payload.repository
+    if (!repo) throw new Error('No Repository in Event Payload')
     console.log('name:', repo.name)
     console.log('description:', repo.description)
     console.log('html_url:', repo.html_url)
     console.log('spdx_id:', repo.license?.spdx_id)
     core.endGroup() // Repository
 
-    // Process Tags: tags
+    // Tags
     core.startGroup('Processing Tags')
     const tags = parseTags(inputs, ref)
-    core.endGroup() // Repository
+    core.endGroup() // Tags
 
-    // Process Labels: labels
+    // Labels
     core.startGroup('Processing Labels')
     const labels = parseLabels(inputs, ref, repo)
     const annotations = labels.map((s) => `manifest:${s}`)
-    core.endGroup() // Repository
+    core.endGroup() // Labels
 
-    // Set Outputs
+    // Outputs
     core.info('📩 Setting Outputs')
     core.setOutput('tags', tags.join(inputs.seperator))
     core.setOutput('labels', labels.join(inputs.seperator))
@@ -64,21 +81,15 @@ async function main() {
             await addSummary(inputs, tags, labels, ref)
         } catch (e) {
             console.log(e)
-            core.error(`Error writing Job Summary ${e.message}`)
+            if (e instanceof Error) core.error(`Error writing Job Summary ${e.message}`)
         }
     }
 
     core.info('✅ \u001b[32;1mFinished Success')
 }
 
-/**
- * @function parseTags
- * @param {Inputs} inputs
- * @param {string} ref
- * @return {string[]}
- */
-function parseTags(inputs, ref) {
-    const tags = []
+function parseTags(inputs: Inputs, ref: string): string[] {
+    const tags: string[] = []
     if (ref) {
         tags.push(ref)
     }
@@ -101,7 +112,7 @@ function parseTags(inputs, ref) {
     console.log('tags:', tags)
     const allTags = [...new Set(tags)]
     console.log('allTags:', allTags)
-    const dockerTags = []
+    const dockerTags: string[] = []
     for (const image of inputs.images) {
         for (const tag of allTags) {
             dockerTags.push(`${image}:${tag}`)
@@ -111,21 +122,16 @@ function parseTags(inputs, ref) {
     return dockerTags
 }
 
-/**
- * @function parseLabels
- * @param {Inputs} inputs
- * @param {string} ref
- * @param {object} repo
- * @return {string[]}
- */
-function parseLabels(inputs, ref, repo) {
-    const defaultLabels = {
+function parseLabels(inputs: Inputs, ref: string, repo: PayloadRepository): string[] {
+    const defaultLabels: Record<string, string> = {
         'org.opencontainers.image.created': new Date().toISOString(),
         'org.opencontainers.image.revision': github.context.sha,
-        'org.opencontainers.image.source': repo.html_url,
         'org.opencontainers.image.title': repo.name,
-        'org.opencontainers.image.url': repo.html_url,
         'org.opencontainers.image.version': ref,
+    }
+    if (repo.html_url) {
+        defaultLabels['org.opencontainers.image.source'] = repo.html_url
+        defaultLabels['org.opencontainers.image.url'] = repo.html_url
     }
     if (repo.description) {
         defaultLabels['org.opencontainers.image.description'] = repo.description
@@ -151,7 +157,7 @@ function parseLabels(inputs, ref, repo) {
         }
     }
     // console.log('defaultLabels:', defaultLabels)
-    const dockerLabels = []
+    const dockerLabels: string[] = []
     for (const [key, value] of Object.entries(defaultLabels)) {
         dockerLabels.push(`${key}=${value}`)
     }
@@ -159,15 +165,7 @@ function parseLabels(inputs, ref, repo) {
     return dockerLabels
 }
 
-/**
- * Add Job Summary
- * @param {Inputs} inputs
- * @param {string[]} tags
- * @param {string[]} labels
- * @param {string} ref
- * @return {Promise<void>}
- */
-async function addSummary(inputs, tags, labels, ref) {
+async function addSummary(inputs: Inputs, tags: string[], labels: string[], ref: string) {
     core.summary.addRaw('## Docker Tags Action\n')
     core.summary.addRaw(
         `Generated **${tags.length}** Tags and **${labels.length}** Labels for ` +
@@ -195,48 +193,9 @@ async function addSummary(inputs, tags, labels, ref) {
     await core.summary.write()
 }
 
-/**
- * Get Inputs
- * @typedef {object} Inputs
- * @property {string[]} images
- * @property {string[]} tags
- * @property {string[]} labels
- * @property {string} seperator
- * @property {string} latest
- * @property {boolean} summary
- * @return {Inputs}
- */
-function getInputs() {
-    return {
-        images: parse(core.getInput('images', { required: true }), {
-            delimiter: ',',
-            trim: true,
-            relax_column_count: true,
-        })
-            .flat()
-            .filter(Boolean),
-        tags: parse(core.getInput('tags'), {
-            delimiter: ',',
-            trim: true,
-            relax_column_count: true,
-        })
-            .flat()
-            .filter(Boolean),
-        labels: parse(core.getInput('labels'), {
-            delimiter: ',',
-            trim: true,
-            relax_column_count: true,
-        })
-            .flat()
-            .filter(Boolean),
-        seperator: core.getInput('seperator', { trimWhitespace: false }) || `\n`,
-        latest: core.getInput('latest'),
-        summary: core.getBooleanInput('summary'),
-    }
+try {
+    await main()
+} catch (e) {
+    console.log(e)
+    if (e instanceof Error) core.setFailed(e.message)
 }
-
-main().catch((e) => {
-    core.debug(e)
-    core.info(e.message)
-    core.setFailed(e.message)
-})
