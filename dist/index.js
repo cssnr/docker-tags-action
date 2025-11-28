@@ -31246,7 +31246,7 @@ const inputs = {
     tags: splitTrim(coreExports.getInput('tags')),
     labels: splitTrim(coreExports.getInput('labels')),
     seperator: coreExports.getInput('seperator', { trimWhitespace: false }),
-    latest: coreExports.getInput('latest'),
+    latest: coreExports.getInput('latest').toLowerCase(),
     summary: coreExports.getBooleanInput('summary'),
 };
 function splitTrim(value) {

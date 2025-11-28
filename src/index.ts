@@ -9,7 +9,7 @@ const inputs = {
     tags: splitTrim(core.getInput('tags')),
     labels: splitTrim(core.getInput('labels')),
     seperator: core.getInput('seperator', { trimWhitespace: false }),
-    latest: core.getInput('latest'),
+    latest: core.getInput('latest').toLowerCase(),
     summary: core.getBooleanInput('summary'),
 }
 

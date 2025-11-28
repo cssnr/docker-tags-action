@@ -50,7 +50,6 @@ jobs:
         with:
           summary: ${{ !github.event.act }}
           latest: true
-
           labels: |
             org.opencontainers.image.licenses=
             org.opencontainers.image.authors=ralf
