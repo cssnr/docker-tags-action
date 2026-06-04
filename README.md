@@ -43,7 +43,7 @@ For a more detailed implementation see: https://github.com/docker/metadata-actio
 
 > [!WARNING]  
 > This action no longer works on the `master` branch.  
-> If you need a rolling tag use the [@release](https://github.com/cssnr/npm-outdated-action/tree/release) branch.
+> If you need a rolling tag use the [@release](https://github.com/cssnr/docker-tags-action/tree/release) branch.
 
 ## Inputs
 
