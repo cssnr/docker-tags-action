@@ -16,7 +16,7 @@ const inputs = {
 
 function splitTrim(value: string): string[] {
   return value
-    ?.split(/[, \n\r]+/)
+    .split(/[, \n\r]+/)
     .map((s) => s.trim())
     .filter(Boolean)
 }
@@ -35,10 +35,13 @@ async function main() {
   core.endGroup() // Debug
 
   // Parse ref
-  let ref = github.context.ref.split('/')[2]
+  let ref
   if (github.context.ref.startsWith('refs/pull/')) {
+    ref = github.context.ref.split('/')[2]
     core.info(`Pull Request: \u001b[36m${ref}`)
     ref = `pr-${ref}`
+  } else {
+    ref = github.context.ref.split('/').slice(2).join('-')
   }
   if (!ref) return core.setFailed(`Unable to parse ref: ${github.context.ref}`)
   core.info(`Parsed ref: \u001b[36m${ref}`)
@@ -91,9 +94,7 @@ async function main() {
 
 function parseTags(inputs: Inputs, ref: string): string[] {
   const tags: string[] = []
-  if (ref) {
-    tags.push(ref)
-  }
+  tags.push(ref)
   if (inputs.latest === 'default') {
     if (
       github.context.eventName === 'release' &&
