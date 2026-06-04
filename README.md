@@ -41,6 +41,10 @@ For a more detailed implementation see: https://github.com/docker/metadata-actio
 > Please submit a [Feature Request](https://github.com/cssnr/docker-tags-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/cssnr/docker-tags-action/issues) if you find any bugs.
 
+> [!WARNING]  
+> This action no longer works on the `master` branch.  
+> If you need a rolling tag use the [@release](https://github.com/cssnr/npm-outdated-action/tree/release) branch.
+
 ## Inputs
 
 | Input                    | Default&nbsp;Value                 | Description&nbsp;of&nbsp;the&nbsp;Input&nbsp;Value |
@@ -235,8 +239,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 ```
-
-To see this used in a release workflow, see: https://github.com/cssnr/cloudflare-purge-cache-action/blob/master/.github/workflows/release.yaml
 
 For more examples, you can check out other projects using this action:  
 https://github.com/cssnr/docker-tags-action/network/dependents
