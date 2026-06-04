@@ -9,7 +9,9 @@ const inputs = {
   images: splitTrim(core.getInput('images', { required: true })),
   tags: splitTrim(core.getInput('tags')),
   labels: splitTrim(core.getInput('labels')),
-  seperator: core.getInput('seperator', { trimWhitespace: false }),
+  separator:
+    core.getInput('seperator', { trimWhitespace: false }) ||
+    core.getInput('separator', { trimWhitespace: false }),
   latest: core.getInput('latest').toLowerCase(),
   summary: core.getBooleanInput('summary'),
 }
@@ -74,9 +76,9 @@ async function main() {
 
   // Outputs
   core.info('📩 Setting Outputs')
-  core.setOutput('tags', tags.join(inputs.seperator))
-  core.setOutput('labels', labels.join(inputs.seperator))
-  core.setOutput('annotations', annotations.join(inputs.seperator))
+  core.setOutput('tags', tags.join(inputs.separator))
+  core.setOutput('labels', labels.join(inputs.separator))
+  core.setOutput('annotations', annotations.join(inputs.separator))
 
   // Summary
   if (inputs.summary) {

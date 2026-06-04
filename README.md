@@ -48,7 +48,7 @@ For a more detailed implementation see: https://github.com/docker/metadata-actio
 | images                   | `ghcr.io/${{ github.repository }}` | Images for Tag Generation, CSV or Newline          |
 | [tags](#docker-tags)     | _[see tags](#docker-tags)_         | Extra Tags to Generate, CSV or Newline             |
 | [labels](#docker-labels) | _[see labels](#docker-labels)_     | Extra Labels to Generate, CSV or Newline           |
-| [seperator](#seperator)  | `\n`                               | Output Seperator                                   |
+| [separator](#separator)  | `\n`                               | Output Separator                                   |
 | [latest](#latest)        | `default`                          | Latest Tag: [`true`, `false`, `default`]           |
 | [summary](#summary)      | `true`                             | Add Summary to Job                                 |
 
@@ -60,9 +60,9 @@ This works with no inputs, but you can customize the resulting tags and labels w
   uses: cssnr/docker-tags-action@v2
 ```
 
-### seperator
+### separator
 
-Output seperator. Newline is default and that works as the input for the docker build actions.
+Output separator. Newline is default and that works as the input for the docker build actions.
 
 ### latest
 
@@ -96,7 +96,7 @@ org.opencontainers.image.description=Generate Docker Tags and Labels for buildin
 org.opencontainers.image.authors=smashedr</code></pre>
 
 </details>
-<details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>images</td><td><code>ghcr.io/cssnr/docker-tags-action</code></td></tr><tr><td>tags</td><td><code></code></td></tr><tr><td>labels</td><td><code>org.opencontainers.image.licenses=,org.opencontainers.image.authors=smashedr</code></td></tr><tr><td>seperator</td><td><code>"\n"</code></td></tr><tr><td>latest</td><td><code>true</code></td></tr><tr><td>summary</td><td><code>true</code></td></tr></table>
+<details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>images</td><td><code>ghcr.io/cssnr/docker-tags-action</code></td></tr><tr><td>tags</td><td><code></code></td></tr><tr><td>labels</td><td><code>org.opencontainers.image.licenses=,org.opencontainers.image.authors=smashedr</code></td></tr><tr><td>separator</td><td><code>"\n"</code></td></tr><tr><td>latest</td><td><code>true</code></td></tr><tr><td>summary</td><td><code>true</code></td></tr></table>
 </details>
 
 ---
@@ -149,7 +149,7 @@ labels: |
 | labels      | Generated Labels        |
 | annotations | Generated Annotations   |
 
-All outputs are seperated by the inputs `seperator` which defaults to a newline.
+All outputs are separated by the inputs `separator` which defaults to a newline.
 
 ```yaml
 - name: 'Docker Tags'
@@ -177,7 +177,7 @@ With all inputs:
     labels: |
       org.opencontainers.image.licenses=
       org.opencontainers.image.authors=smashedr
-    seperator: ','
+    separator: ','
     latest: true
 ```
 

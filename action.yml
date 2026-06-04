@@ -15,7 +15,10 @@ inputs:
   labels:
     description: "Extra Labels to Add"
   seperator:
-    description: "Output Seperator"
+    description: "Output Separator"
+    deprecationMessage: "Changed to: separator (fix typo)"
+  separator:
+    description: "Output Separator"
     default: "\n"
   latest:
     description: "Latest Tag"
