@@ -4,43 +4,107 @@ on:
   release:
     types: [published]
 
+env:
+  tag: "${{ github.ref_name || github.event.release.tag_name }}"
+  source: source # directory name - master/main branch
+  release: release # directory and branch name - release branch
+
 jobs:
   release:
     name: "Release"
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
 
     permissions:
       contents: write
 
     steps:
-      - name: "Update Tags"
-        id: tags
-        uses: cssnr/update-version-tags-action@latest
-        with:
-          tags: "latest"
-
-      - name: "Debug Tags"
+      - name: "Debug"
         continue-on-error: true
         run: |
-          echo "github.ref_name: ${{ github.ref_name }}"
-          echo "steps.tags.outputs.tags: ${{ steps.tags.outputs.tags }}"
+          pwd
+          echo "env.tag: ${{ env.tag }}"
+          echo "env.source: ${{ env.source }}"
+          echo "env.release: ${{ env.release }}"
 
-      - name: "Update Release Notes Action"
+      - name: "Checkout Source"
+        uses: actions/checkout@v6
+        with:
+          path: ${{ env.source }}
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: "Run Build"
+        working-directory: ${{ env.source }}
+        run: |
+          pwd
+          npm ci
+
+      - name: "Checkout Release"
+        uses: actions/checkout@v6
+        with:
+          path: ${{ env.release }}
+          ref: ${{ env.release }}
+
+      - name: "Debug 1"
+        continue-on-error: true
+        run: |
+          sha256sum "${{ env.source }}/dist/index.js"
+          sha256sum "${{ env.release }}/dist/index.js"
+
+      - name: "Copy Build"
+        run: |
+          cp "${{ env.source }}/action.yml" "${{ env.release }}/"
+          rm -rf "${{ env.release }}/dist"
+          cp -r "${{ env.source }}/dist" "${{ env.release }}/dist"
+
+      - name: "Debug 2"
+        continue-on-error: true
+        run: |
+          sha256sum "${{ env.source }}/dist/index.js"
+          sha256sum "${{ env.release }}/dist/index.js"
+
+      - name: "Commit and Push"
+        uses: suzuki-shunsuke/commit-action@06e3b49d4706498d325d29bd85adc82ecf2f5d8f # v1.0.0
+        with:
+          commit_message: ${{ env.tag }}
+          branch: ${{ env.release }}
+          files: |
+            action.yml
+            dist/
+          root_dir: ${{ env.release }}
+          fail_on_self_push: false
+          app_id: ${{ vars.APP_CLIENT_ID }}
+          app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: "Update Version Tags"
+        id: tags
+        uses: smashedr/update-version-tags-action@updates # TODO: Update After Release
+        with:
+          ref: refs/heads/${{ env.release }}
+          tag: ${{ env.tag }}
+          #tags: "latest"
+          force: true
+          release: true
+
+      - name: "Update Release Notes"
         continue-on-error: true
         uses: smashedr/update-release-notes-action@master
         with:
-          tags: ${{ steps.tags.outputs.tags }}
-          location: tail
-          type: "actions"
+          location: "tail"
+          actions: |
+            tags: ${{ steps.tags.outputs.tags }}
 
-      - name: "Package Changelog Action"
+      - name: "Package Changelog"
         continue-on-error: true
-        uses: cssnr/package-changelog-action@latest
+        uses: cssnr/package-changelog-action@v2
 
       - name: "Send Failure Notification"
         if: ${{ failure() }}
-        uses: sarisia/actions-status-discord@b8381b25576cb341b2af39926ab42c5056cc44ed # v1.15.5
+        uses: sarisia/actions-status-discord@eb045afee445dc055c18d3d90bd0f244fd062708 # v1.16.0
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          description: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}
+          description: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

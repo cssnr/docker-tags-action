@@ -1,21 +1,15 @@
+import { defineConfig } from 'eslint/config'
 import js from '@eslint/js'
+import tseslint from 'typescript-eslint'
 
-export default [
-    js.configs.recommended,
-    {
-        languageOptions: {
-            ecmaVersion: 'latest',
-            sourceType: 'module',
-        },
-        settings: {
-            env: {
-                node: true,
-                es2021: true,
-            },
-        },
-        rules: {
-            'no-undef': 'off',
-            'no-extra-semi': 'off',
-        },
+// noinspection JSCheckFunctionSignatures
+export default defineConfig([
+  js.configs.recommended,
+  tseslint.configs.recommended,
+  {
+    languageOptions: {
+      sourceType: 'module',
+      parser: tseslint.parser,
     },
-]
+  },
+])

@@ -1,6 +1,7 @@
 name: "Docker Tags"
 description: "Generate Docker Tags, Labels and Annotations for building Docker images with GitHub Actions."
 author: "Shane"
+
 branding:
   icon: "tag"
   color: "blue"
@@ -14,7 +15,11 @@ inputs:
   labels:
     description: "Extra Labels to Add"
   seperator:
-    description: "Output Seperator"
+    description: "Output Separator"
+    deprecationMessage: "Changed to: separator (fix typo)"
+  separator:
+    description: "Output Separator"
+    default: "\n"
   latest:
     description: "Latest Tag"
     default: "default"
