@@ -1,0 +1,40 @@
+name: "Docker Tags"
+description: "Generate Docker Tags, Labels and Annotations for building Docker images with GitHub Actions."
+author: "Shane"
+
+branding:
+  icon: "tag"
+  color: "blue"
+
+inputs:
+  images:
+    description: "Image Names to Tag"
+    default: "ghcr.io/${{ github.repository }}"
+  tags:
+    description: "Extra Tags to Add"
+  labels:
+    description: "Extra Labels to Add"
+  seperator:
+    description: "Output Separator"
+    deprecationMessage: "Changed to: separator (fix typo)"
+  separator:
+    description: "Output Separator"
+    default: "\n"
+  latest:
+    description: "Latest Tag"
+    default: "default"
+  summary:
+    description: "Add Summary to Job"
+    default: "true"
+
+outputs:
+  tags:
+    description: "Generated Docker Tags"
+  labels:
+    description: "Generated Docker Labels"
+  annotations:
+    description: "Generated Docker Annotations"
+
+runs:
+  using: "node24"
+  main: "dist/index.js"
