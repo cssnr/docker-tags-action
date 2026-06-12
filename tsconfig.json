@@ -3,10 +3,10 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "module": "NodeNext",
+    "module": "ESNext",
     "target": "ESNext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "removeComments": true,
     "skipLibCheck": true,
     "types": ["node"]
   },
