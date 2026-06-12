@@ -1,7 +1,5 @@
 name: "Test"
 
-# actions-up-ignore-file
-
 on:
   workflow_dispatch:
   #schedule:
@@ -83,4 +81,4 @@ jobs:
       #  uses: sarisia/actions-status-discord@v1
       #  with:
       #    webhook: ${{ secrets.DISCORD_WEBHOOK }}
-      #    description: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}
+      #    description: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
